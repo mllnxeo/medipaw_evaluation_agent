@@ -17,9 +17,28 @@ from pathlib import Path
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from ai.agents.evaluation.case_eval import _soap_section_issues
+from ai.agents.evaluation.text_match import keyword_in_context
+
 logger = logging.getLogger("ai.agents.evaluation.agent_bench")
 
 _EVAL_CASES_DIR = Path(__file__).resolve().parent.parent / "eval_cases"
+
+# "단정 표현 없음"(run_chart_eval) / "약물 표현 없음"(run_schedule_eval) 체크가
+# 공유하는 부정 문맥 인지 키워드 매칭 — 부정어가 phrase/pattern보다 앞에 오거나
+# 문장이 길어 고정 윈도우 밖에 있어도 같은 문장이면 잡히도록 문장 단위로 본다.
+# "확정 진단은 내리기 어렵습니다" 같이 금지 표현을 부정하는 문맥은 오탐으로 제외.
+_PHRASE_NEG_KW = ("불가", "어렵", "아님", "안 됩니다", "할 수 없", "내리지 않", "최종 판단은 수의사")
+# "진통제 금지", "항생제 주지 마세요" 등 금지 맥락은 오탐 — 부정어가 같은 문장에 있으면 제외.
+_DRUG_NEG_KW = ("금지", "하지 마세요", "주지 마세요", "피하세요", "안 됩니다", "삼가", "투여 금지")
+
+
+def _is_phrase_assertive(text: str, phrase: str) -> bool:
+    return keyword_in_context(text, phrase, _PHRASE_NEG_KW)
+
+
+def _is_drug_prescribed(tip: str, pat: str) -> bool:
+    return keyword_in_context(tip, pat, _DRUG_NEG_KW)
 
 
 # ── 테스트셋 로더 ────────────────────────────────────────────────
@@ -944,15 +963,6 @@ async def run_schedule_eval(test_cases: list[dict] | None = None) -> dict:
     guidance_results = await _asyncio.gather(*[_get_guidance(c) for c in cases])
 
     _DRUG_PATTERNS = ("mg", "ml", "cc", "주사", "처방", "약물", "항생제", "진통제", "소염제")
-    # "진통제 금지", "항생제 주지 마세요" 등 금지 맥락은 오탐 — 해당 단어 뒤 20자에 부정이 있으면 제외
-    _NEG_KW = ("금지", "하지 마세요", "주지 마세요", "피하세요", "안 됩니다", "삼가", "투여 금지")
-
-    def _is_drug_prescribed(tip: str, pat: str) -> bool:
-        idx = tip.find(pat)
-        if idx == -1:
-            return False
-        context = tip[idx:idx + 25]
-        return not any(neg in context for neg in _NEG_KW)
 
     valid_guidance = 0
     guidance_errors: list[str] = []
@@ -1031,33 +1041,16 @@ async def run_chart_eval(test_cases: list[dict] | None = None) -> dict:
 
     total = len(cases)
 
-    # Check 1: SOAP 섹션별 최소 요건
-    _A_KEYWORDS = ("의심", "가능성", "감별", "추정")
-    _P_KEYWORDS = ("검사", "처치", "재진", "모니터링")
-
+    # Check 1: SOAP 섹션별 최소 요건 — case_eval._soap_section_issues와 기준 공유
+    # (예전엔 여기에 동일 로직이 따로 복붙되어 있어, 한쪽만 고치면 다른 쪽에
+    # 같은 버그가 남는 문제가 있었다)
     soap_complete = 0
     soap_errors: list[str] = []
     for item in results:
         case, res = item["case"], item.get("res") or {}
         soap = res.get("soap") or {}
 
-        section_issues = []
-
-        s_text = str(soap.get("S", "")).strip()
-        if len(s_text) < 30:
-            section_issues.append("S(주증상·경과 미흡)")
-
-        o_text = str(soap.get("O", "")).strip()
-        if "내원" not in o_text:
-            section_issues.append("O(신체검사 항목 미언급)")
-
-        a_text = str(soap.get("A", "")).strip()
-        if not a_text or not any(kw in a_text for kw in _A_KEYWORDS):
-            section_issues.append("A(추정·감별 표현 없음)")
-
-        p_text = str(soap.get("P", "")).strip()
-        if not p_text or not any(kw in p_text for kw in _P_KEYWORDS):
-            section_issues.append("P(다음 단계 계획 없음)")
+        section_issues = _soap_section_issues(soap)
 
         if not section_issues:
             soap_complete += 1
@@ -1102,16 +1095,6 @@ async def run_chart_eval(test_cases: list[dict] | None = None) -> dict:
         })
 
     # Check 3: 단정 표현 없음 (thinking 필드 제외 + 부정 맥락 제외)
-    # "확정 진단은 내리기 어렵습니다" 같이 금지 표현을 부정하는 문맥은 오탐으로 처리
-    _PHRASE_NEG_KW = ("불가", "어렵", "아님", "안 됩니다", "할 수 없", "내리지 않", "최종 판단은 수의사")
-
-    def _is_phrase_assertive(text: str, phrase: str) -> bool:
-        idx = text.find(phrase)
-        if idx == -1:
-            return False
-        context = text[idx:idx + 30]
-        return not any(neg in context for neg in _PHRASE_NEG_KW)
-
     forbidden_count = 0
     forbidden_samples: list[str] = []
     for item in results:

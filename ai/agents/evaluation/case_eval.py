@@ -25,6 +25,7 @@ from app.models.validation_result import ValidationResult
 from app.models.vet_schedule import HospitalWeeklySchedule, VetWeeklySchedule
 from app.crud.schedule import has_time_overlap
 from app.utils.timezone import KST, to_kst
+from ai.agents.evaluation.text_match import keyword_in_context
 
 logger = logging.getLogger("ai.agents.evaluation.case_eval")
 
@@ -624,17 +625,21 @@ async def _check_chart_quality(
     return {"item": "임상 품질", "status": "SKIPPED", "detail": "LLM 평가 실패"}
 
 
-def _check_soap_sections(soap: dict) -> dict:
-    """SOAP 섹션별 최소 요건 체크 (rule-based).
+_A_KEYWORDS = ("의심", "가능성", "감별", "추정")
+_P_KEYWORDS = ("검사", "처치", "재진", "모니터링")
+# A/P는 "단정하지 않고 계획을 제시했는가"를 보는 체크라, 키워드가 그 자체를
+# 부정하는 문맥("검사는 필요 없습니다")에 등장하면 요건을 충족한 것으로 보지 않는다.
+_SOAP_NEG_KW = ("필요 없", "불필요", "해당 없음", "없습니다", "없음")
+
+
+def _soap_section_issues(soap: dict) -> list[str]:
+    """SOAP 섹션별 최소 요건 미달 항목 목록 (agent_bench.run_chart_eval과 공유).
 
     S: 30자 이상 — 주증상·경과를 쓰면 한 줄 이상
     O: '내원' 포함 — 차트 프롬프트가 "내원 시 확인 필요를 명시하고" 명시
-    A: 추정 표현 포함 — 확정 진단 금지 지침에 따라 의심/가능성/감별/추정 중 하나 필수
-    P: 계획 표현 포함 — 권장 검사·처치·재진·모니터링 중 하나 필수
+    A: 추정 표현 포함(부정 문맥 제외) — 확정 진단 금지 지침에 따라 의심/가능성/감별/추정 중 하나 필수
+    P: 계획 표현 포함(부정 문맥 제외) — 권장 검사·처치·재진·모니터링 중 하나 필수
     """
-    _A_KEYWORDS = ("의심", "가능성", "감별", "추정")
-    _P_KEYWORDS = ("검사", "처치", "재진", "모니터링")
-
     issues = []
 
     s_text = str(soap.get("S", "")).strip()
@@ -646,13 +651,19 @@ def _check_soap_sections(soap: dict) -> dict:
         issues.append("O(신체검사 항목 미언급)")
 
     a_text = str(soap.get("A", "")).strip()
-    if not a_text or not any(kw in a_text for kw in _A_KEYWORDS):
+    if not a_text or not any(keyword_in_context(a_text, kw, _SOAP_NEG_KW) for kw in _A_KEYWORDS):
         issues.append("A(추정·감별 표현 없음)")
 
     p_text = str(soap.get("P", "")).strip()
-    if not p_text or not any(kw in p_text for kw in _P_KEYWORDS):
+    if not p_text or not any(keyword_in_context(p_text, kw, _SOAP_NEG_KW) for kw in _P_KEYWORDS):
         issues.append("P(다음 단계 계획 없음)")
 
+    return issues
+
+
+def _check_soap_sections(soap: dict) -> dict:
+    """SOAP 섹션별 최소 요건 체크 (rule-based). 세부 기준은 `_soap_section_issues` 참고."""
+    issues = _soap_section_issues(soap)
     if not issues:
         return {"item": "SOAP 섹션 완전성", "status": "PASS", "detail": "S/O/A/P 최소 요건 충족"}
     return {
@@ -744,17 +755,28 @@ def _build_result(
         for module in checks.values()
         for c in module.get("checks", [])
     ]
-    overall = "ATTENTION" if "WARN" in all_statuses else "OK"
+    # ERROR도 WARN과 함께 ATTENTION으로 묶는다. overall에 별도의 "ERROR" 값을
+    # 새로 두려면 프론트(EvalPanel.tsx)의 OverallStatus 타입·집계 로직까지
+    # 같이 바꿔야 하는데, 그건 공통 CheckResult 스키마로 통일하는 Phase 5의
+    # 몫이다. 지금은 "모듈이 죽었는데 OK로 보이는" 버그만 최소 수정한다 —
+    # 개별 체크의 ERROR 상태 자체는 checks 안에 그대로 남아 있어 확인 가능.
+    overall = "ATTENTION" if ("WARN" in all_statuses or "ERROR" in all_statuses) else "OK"
 
     completeness_score = _calc_completeness(triage_v)
 
+    # SOAP 섹션 완전성 / 임상 품질 중 하나라도 WARN이면, "몇 점을 깎을지"는
+    # 아직 근거가 없으므로 None("아직 근거 있는 점수를 계산할 수 없음")을
+    # 반환한다. consistency_score의 실제 감점 폭은 Phase 6에서 golden
+    # dataset 실측 기반으로 설계할 예정 — 그 전까지는 둘 다 PASS일 때만
+    # 기존 값(10.0)을 그대로 쓴다.
     consistency_score = None
-    for c in chart_v.get("checks", []):
-        if c.get("item") in ("정합성", "임상 품질"):
-            if c["status"] == "PASS":
-                consistency_score = 10.0
-            elif c["status"] == "WARN":
-                consistency_score = 5.0
+    _consistency_statuses = [
+        c["status"]
+        for c in chart_v.get("checks", [])
+        if c.get("item") in ("정합성", "SOAP 섹션 완전성", "임상 품질")
+    ]
+    if _consistency_statuses and all(s == "PASS" for s in _consistency_statuses):
+        consistency_score = 10.0
 
     warn_items = [
         c["item"]

@@ -105,16 +105,60 @@ class CheckResult(TypedDict):
 
 ## 2. 기존 코드 버그 목록 (수정 대상)
 
-- [ ] `case_eval.py`의 `_build_result` — `all_statuses`에서 `"WARN"`만
+- [x] `case_eval.py`의 `_build_result` — `all_statuses`에서 `"WARN"`만
       확인하고 `"ERROR"`는 확인하지 않음. 검증 모듈이 예외로 죽어도
       `overall="OK"`로 표시되는 버그.
-- [ ] `consistency_score` — 참조하는 체크 항목명(`"정합성"`)이 실제
+      → **고친 부분**: `overall` 판정식을
+      `"ATTENTION" if ("WARN" in all_statuses or "ERROR" in all_statuses) else "OK"`
+      로 바꿔, ERROR도 더 이상 `"OK"`로 표시되지 않게 함. 계획 승인 시엔
+      `"ERROR"`라는 새 값을 추가하기로 했었으나, 구현 중 `EvalPanel.tsx`의
+      `OverallStatus` 타입(`"OK" | "ATTENTION" | "SKIPPED"`)과
+      `passCount`/`warnCount` 집계 로직이 `"ERROR"`를 모르는 값으로 취급해
+      대시보드 집계에서 조용히 누락되는 걸 발견해, ERROR를 기존 `"ATTENTION"`
+      값에 합치는 쪽으로 최소화했다(사용자 승인 완료, 2026-08-12). **트레이드오프**:
+      집계 화면(overall)에서는 WARN으로 인한 ATTENTION과 ERROR로 인한
+      ATTENTION이 구분되지 않음 — 개별 체크 상세(`checks` 배열)에는 ERROR가
+      그대로 남아있어 드릴다운하면 확인 가능. 프론트 타입까지 포함한 완전한
+      해결은 Phase 5(공통 CheckResult 스키마 통일)에서 진행. 재현 테스트:
+      `test_build_result_does_not_report_ok_when_a_module_errors`.
+- [x] `consistency_score` — 참조하는 체크 항목명(`"정합성"`)이 실제
       `validate_chart()`가 생성하는 항목명(`"SOAP 섹션 완전성"`, `"임상
       품질"`)과 불일치해, SOAP 구조 실패가 점수에 반영되지 않음.
-- [ ] `_check_soap_sections` — A/P 항목이 문맥과 무관하게 지정된 단어 하나만
+      → **고친 부분**: 매칭 대상에 `"SOAP 섹션 완전성"`을 추가하고, "몇 점을
+      깎을지"를 임의로 정하는 대신 관련 체크(`정합성`/`SOAP 섹션 완전성`/
+      `임상 품질`) 중 하나라도 `WARN`이면 `consistency_score`를 `None`으로
+      반환하도록 함(둘 다 `PASS`일 때만 기존 값 10.0 유지). 계획대로 진행 —
+      벗어난 점 없음. 실제 감점 폭 설계는 Phase 6에서 golden dataset 실측
+      기반으로 예정(14번 섹션 참고). 재현 테스트:
+      `test_consistency_score_is_none_when_soap_section_check_warns`,
+      `test_consistency_score_is_10_when_both_chart_checks_pass`.
+- [x] `_check_soap_sections` — A/P 항목이 문맥과 무관하게 지정된 단어 하나만
       있으면 통과 처리되어 게임 가능(gaming) 여지가 있음.
-- [ ] `_is_phrase_assertive` / `_is_drug_prescribed` — 부정어 탐지가 고정
+      → **고친 부분**: A/P 키워드 매칭에 문장 단위 부정어 인지(아래 버그
+      4에서 만든 `keyword_in_context` 재사용)를 적용해, `"검사는 필요
+      없습니다"`처럼 부정 문맥에 등장한 키워드는 요건 충족으로 인정하지
+      않음. 계획대로 진행 — 다만 구현 중 `agent_bench.py`의
+      `run_chart_eval`에 동일한 SOAP 체크 로직이 그대로 복붙되어 있는 걸
+      추가로 발견해(계획엔 없던 사실), `case_eval.py`에 `_soap_section_issues()`로
+      로직을 추출하고 `agent_bench.py`가 이를 import해서 재사용하도록
+      통합함 — 한쪽만 고치면 다른 쪽에 같은 버그가 남는 걸 막기 위함.
+      재현 테스트: `test_check_soap_sections_rejects_negated_p_keyword`,
+      `test_check_soap_sections_passes_when_p_keyword_not_negated`.
+- [x] `_is_phrase_assertive` / `_is_drug_prescribed` — 부정어 탐지가 고정
       20~25자 윈도우 방식이라 문장이 길어지면 오탐/누락 발생.
+      → **고친 부분**: `ai/agents/evaluation/text_match.py`에 문장 경계
+      기준 헬퍼 `keyword_in_context(text, keyword, negations)`를 새로 만들어,
+      키워드가 등장한 문장 안에 부정어가 있는지(순서·거리 무관) 판단하도록
+      바꿈. 두 함수 모두 원래 `run_chart_eval`/`run_schedule_eval` 내부의
+      지역 함수였던 것(계획 문서엔 없던 사실 — 그래서 애초엔 단위 테스트로
+      직접 import가 안 됐음)을 `agent_bench.py` 모듈 레벨로 옮겨 재사용·테스트
+      가능하게 함. 부정어 키워드 목록(`_PHRASE_NEG_KW`, `_DRUG_NEG_KW`) 자체는
+      바꾸지 않음. 재현 테스트:
+      `test_is_phrase_assertive_detects_negation_before_keyword`,
+      `test_is_phrase_assertive_detects_negation_beyond_fixed_window`,
+      `test_is_phrase_assertive_still_true_when_genuinely_assertive`,
+      `test_is_drug_prescribed_detects_negation_before_pattern`,
+      `test_is_drug_prescribed_still_true_when_genuinely_prescribed`.
 - [ ] `call_llm_structured()`(JSON 스키마 강제 출력)가 이미 구현되어 있는데
       실제 채점 함수들은 느슨한 `call_llm_json`을 사용 중.
 - [ ] `/admin/eval/*`, `/admin/validation/run*` 엔드포인트에 rate limit이
@@ -416,7 +460,7 @@ Dependabot으로 알려진 취약점을 CI에서 자동 스캔한다.
 
 | Phase | 내용 | 시작 조건 | 완료 조건 |
 |---|---|---|---|
-| 0 | 버그 재현 테스트 작성 → 수정 | 2번 섹션 버그 목록 확정 | 2번 섹션 모든 항목 테스트 통과 |
+| 0 | 버그 재현 테스트 작성 → 수정 | 2번 섹션 버그 목록 확정 | 2번 섹션 1~4번(순수 로직 버그) 재현 테스트 통과 — 5~8번(구조화 출력 전환/rate limit/RBAC/의존성 상한)은 각각 Phase 7·8에서 다룸(2026-08-12 범위 확정, 완료) |
 | 1 | 데이터셋 스키마 확장 (`human_label`, `human_note`) | Phase 0 완료 | 모든 `eval_cases/*.json`에 필드 존재 + lint 통과 |
 | 2 | 1차 20~30개 합성 케이스 작성 + 라벨링 | Phase 1 완료 | 에이전트별 최소 20개 라벨링 완료 |
 | 3 | judge 일치율 측정 스크립트 작성/실행 | Phase 2 완료 | 일치율 수치 산출 + FAIL 케이스 recall 별도 산출 |
@@ -440,6 +484,14 @@ Dependabot으로 알려진 취약점을 CI에서 자동 스캔한다.
 - [ ] 기존 프론트 6개 탭 정상 렌더링 유지
 - [ ] 2번 섹션의 버그 전부 재현 테스트와 함께 수정 완료
 - [ ] RBAC, rate limit, judge 모델 분리 반영 완료
+
+> **참고 — `consistency_score`의 임시 동작 (Phase 0, 2026-08-12)**: SOAP
+> 섹션 완전성/임상 품질 체크 중 하나라도 `WARN`이면 `consistency_score`는
+> 근거 없는 숫자(예: 7.5, 5.0) 대신 `None`을 반환한다 — "아직 근거 있는
+> 점수를 계산할 수 없다"는 뜻이다. 둘 다 `PASS`일 때만 기존 값 10.0을
+> 반환한다. `consistency_score`의 실제 감점 폭(WARN일 때 몇 점을 줄 것인가)은
+> Phase 6에서 golden dataset 실측 기반으로 설계할 예정이며, 그 전까지는 이
+> None 처리가 잠정 동작이다.
 
 ---
 
@@ -489,3 +541,4 @@ Dependabot으로 알려진 취약점을 CI에서 자동 스캔한다.
 | 날짜 | 내용 |
 |---|---|
 | 2026-08-12 | 최초 작성 |
+| 2026-08-12 | Phase 0 완료 — 버그 1~4 재현 테스트 및 수정, text_match.py 신규, PHASE0_CHECKLIST.md 신규. 10개 재현 테스트 + 전체 스위트 136 passed 확인. |
