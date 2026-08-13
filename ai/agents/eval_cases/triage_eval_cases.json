@@ -8,7 +8,9 @@
     "expected_extracted": {"NEUROLOGIC": {"seizure_status": "active"}},
     "expected_urgency": "RED",
     "expected_red_flag": true,
-    "expected_summary_keywords": ["발작"]
+    "expected_summary_keywords": ["발작"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "심한 호흡곤란 (RED — RESPIRATORY)",
@@ -19,7 +21,9 @@
     "expected_extracted": {"RESPIRATORY": {"breathing_severity": "severe"}},
     "expected_urgency": "RED",
     "expected_red_flag": true,
-    "expected_summary_keywords": ["호흡"]
+    "expected_summary_keywords": ["호흡"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "의식불명 (RED — NEUROLOGIC)",
@@ -30,7 +34,9 @@
     "expected_extracted": {"NEUROLOGIC": {"consciousness": "unresponsive"}},
     "expected_urgency": "RED",
     "expected_red_flag": true,
-    "expected_summary_keywords": ["의식"]
+    "expected_summary_keywords": ["의식"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "요도폐색 (RED — UROGENITAL)",
@@ -41,7 +47,9 @@
     "expected_extracted": {"UROGENITAL": {"urination": "obstruction"}},
     "expected_urgency": "RED",
     "expected_red_flag": true,
-    "expected_summary_keywords": ["소변"]
+    "expected_summary_keywords": ["소변"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "자일리톨 섭취 (RED — TOXIN)",
@@ -52,7 +60,9 @@
     "expected_extracted": {"TOXIN": {"substance": "xylitol"}},
     "expected_urgency": "RED",
     "expected_red_flag": true,
-    "expected_summary_keywords": ["자일리톨"]
+    "expected_summary_keywords": ["자일리톨"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "GDV 위염전 의심 (RED — GASTROINTESTINAL)",
@@ -63,7 +73,9 @@
     "expected_extracted": {"GASTROINTESTINAL": {"abdominal_distension": "rapid_onset", "vomiting": "persistent"}},
     "expected_urgency": "RED",
     "expected_red_flag": true,
-    "expected_summary_keywords": ["복부", "팽창"]
+    "expected_summary_keywords": ["복부", "팽창"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "쇼크 (RED — CARDIOVASCULAR)",
@@ -74,7 +86,9 @@
     "expected_extracted": {"CARDIOVASCULAR": {"perfusion": "shock", "collapse": "collapsed_now"}},
     "expected_urgency": "RED",
     "expected_red_flag": true,
-    "expected_summary_keywords": ["쇼크", "잇몸"]
+    "expected_summary_keywords": ["쇼크", "잇몸"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "포도 섭취 (RED — TOXIN)",
@@ -85,7 +99,9 @@
     "expected_extracted": {"TOXIN": {"substance": "grapes_raisins"}},
     "expected_urgency": "RED",
     "expected_red_flag": true,
-    "expected_summary_keywords": ["포도"]
+    "expected_summary_keywords": ["포도"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "난산 (RED — REPRODUCTIVE)",
@@ -96,7 +112,9 @@
     "expected_extracted": {"REPRODUCTIVE": {"dystocia": "prolonged_or_stuck"}},
     "expected_urgency": "RED",
     "expected_red_flag": true,
-    "expected_summary_keywords": ["분만", "난산"]
+    "expected_summary_keywords": ["분만", "난산"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "열사병 (RED — ENVIRONMENTAL)",
@@ -107,7 +125,9 @@
     "expected_extracted": {"ENVIRONMENTAL": {"heatstroke": "suspected"}},
     "expected_urgency": "RED",
     "expected_red_flag": true,
-    "expected_summary_keywords": ["열사병"]
+    "expected_summary_keywords": ["열사병"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "중등도 호흡곤란 (ORANGE — RESPIRATORY)",
@@ -118,7 +138,9 @@
     "expected_extracted": {"RESPIRATORY": {"breathing_severity": "moderate"}},
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["호흡"]
+    "expected_summary_keywords": ["호흡"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "기도 협착음 (ORANGE — RESPIRATORY)",
@@ -129,7 +151,9 @@
     "expected_extracted": {"RESPIRATORY": {"stridor": "yes"}},
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["소리"]
+    "expected_summary_keywords": ["소리"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "혈성 비루 (ORANGE — RESPIRATORY)",
@@ -140,7 +164,9 @@
     "expected_extracted": {"RESPIRATORY": {"nasal_discharge": "bloody"}},
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["코", "출혈"]
+    "expected_summary_keywords": ["코", "출혈"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "혈변 (ORANGE — GASTROINTESTINAL)",
@@ -151,7 +177,9 @@
     "expected_extracted": {"GASTROINTESTINAL": {"diarrhea": "bloody"}},
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["혈변"]
+    "expected_summary_keywords": ["혈변"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "혈토 (ORANGE — GASTROINTESTINAL)",
@@ -162,7 +190,9 @@
     "expected_extracted": {"GASTROINTESTINAL": {"vomiting": "hematemesis"}},
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["혈토"]
+    "expected_summary_keywords": ["혈토"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "의식 저하 (ORANGE — NEUROLOGIC)",
@@ -173,7 +203,9 @@
     "expected_extracted": {"NEUROLOGIC": {"consciousness": "dull"}},
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["의식", "반응"]
+    "expected_summary_keywords": ["의식", "반응"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "얼굴 부종 — 알레르기 (ORANGE — SKIN)",
@@ -184,7 +216,9 @@
     "expected_extracted": {"SKIN": {"facial_swelling": "yes"}},
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["부종"]
+    "expected_summary_keywords": ["부종"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "초콜릿 섭취 (ORANGE — TOXIN)",
@@ -195,7 +229,9 @@
     "expected_extracted": {"TOXIN": {"substance": "chocolate"}},
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["초콜릿"]
+    "expected_summary_keywords": ["초콜릿"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "경도 호흡곤란 (YELLOW — RESPIRATORY)",
@@ -206,7 +242,9 @@
     "expected_extracted": {"RESPIRATORY": {"breathing_severity": "mild"}},
     "expected_urgency": "YELLOW",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["호흡"]
+    "expected_summary_keywords": ["호흡"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "잦은 기침 (YELLOW — RESPIRATORY)",
@@ -217,7 +255,9 @@
     "expected_extracted": {"RESPIRATORY": {"cough": "frequent"}},
     "expected_urgency": "YELLOW",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["기침"]
+    "expected_summary_keywords": ["기침"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "안정 시 빈호흡 (YELLOW — RESPIRATORY)",
@@ -228,7 +268,9 @@
     "expected_extracted": {"RESPIRATORY": {"breathing_rate": "fast"}},
     "expected_urgency": "YELLOW",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["호흡", "빠른"]
+    "expected_summary_keywords": ["호흡", "빠른"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "거위소리 기침 (YELLOW — RESPIRATORY)",
@@ -239,7 +281,9 @@
     "expected_extracted": {"RESPIRATORY": {"cough": "honking"}},
     "expected_urgency": "YELLOW",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["기침"]
+    "expected_summary_keywords": ["기침"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "지속 구토 (YELLOW — GASTROINTESTINAL)",
@@ -250,7 +294,9 @@
     "expected_extracted": {"GASTROINTESTINAL": {"vomiting": "persistent"}},
     "expected_urgency": "YELLOW",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["구토"]
+    "expected_summary_keywords": ["구토"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "혈뇨 (YELLOW — UROGENITAL)",
@@ -261,7 +307,9 @@
     "expected_extracted": {"UROGENITAL": {"hematuria": "yes"}},
     "expected_urgency": "YELLOW",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["혈뇨"]
+    "expected_summary_keywords": ["혈뇨"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "운동실조 비틀거림 (YELLOW — NEUROLOGIC)",
@@ -272,7 +320,9 @@
     "expected_extracted": {"NEUROLOGIC": {"ataxia": "yes"}},
     "expected_urgency": "YELLOW",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["비틀", "보행"]
+    "expected_summary_keywords": ["비틀", "보행"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "뒷다리 체중부하 불가 (YELLOW — ORTHOPEDIC)",
@@ -283,7 +333,9 @@
     "expected_extracted": {"ORTHOPEDIC": {"ambulation": "non_weight_bearing"}},
     "expected_urgency": "YELLOW",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["다리", "절음"]
+    "expected_summary_keywords": ["다리", "절음"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "심한 피부 가려움 (YELLOW — SKIN)",
@@ -294,7 +346,9 @@
     "expected_extracted": {"SKIN": {"itch": "severe"}},
     "expected_urgency": "YELLOW",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["가려움"]
+    "expected_summary_keywords": ["가려움"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "다음다뇨 (YELLOW — UROGENITAL)",
@@ -305,7 +359,9 @@
     "expected_extracted": {"UROGENITAL": {"polyuria": "yes"}},
     "expected_urgency": "YELLOW",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["다뇨"]
+    "expected_summary_keywords": ["다뇨"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "경증 탈수 (YELLOW — GENERAL)",
@@ -316,7 +372,9 @@
     "expected_extracted": {"GENERAL": {"dehydration": "mild"}},
     "expected_urgency": "YELLOW",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["탈수"]
+    "expected_summary_keywords": ["탈수"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "귀 혈종 (YELLOW — EAR)",
@@ -327,7 +385,9 @@
     "expected_extracted": {"EAR": {"aural_hematoma": "yes"}},
     "expected_urgency": "YELLOW",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["귀", "혈종"]
+    "expected_summary_keywords": ["귀", "혈종"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "가끔 기침 (GREEN — RESPIRATORY)",
@@ -338,7 +398,9 @@
     "expected_extracted": {"RESPIRATORY": {"cough": "occasional"}},
     "expected_urgency": "GREEN",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["기침"]
+    "expected_summary_keywords": ["기침"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "재채기 (GREEN — RESPIRATORY)",
@@ -349,7 +411,9 @@
     "expected_extracted": {"RESPIRATORY": {"sneezing": "yes"}},
     "expected_urgency": "GREEN",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["재채기"]
+    "expected_summary_keywords": ["재채기"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "맑은 콧물 (GREEN — RESPIRATORY)",
@@ -360,7 +424,9 @@
     "expected_extracted": {"RESPIRATORY": {"nasal_discharge": "clear"}},
     "expected_urgency": "GREEN",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["콧물"]
+    "expected_summary_keywords": ["콧물"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "국소 피부 병변 (GREEN — SKIN)",
@@ -371,7 +437,9 @@
     "expected_extracted": {"SKIN": {"lesion_extent": "localized"}},
     "expected_urgency": "GREEN",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["피부", "병변"]
+    "expected_summary_keywords": ["피부", "병변"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "귀 진드기 (GREEN — EAR)",
@@ -382,7 +450,9 @@
     "expected_extracted": {"EAR": {"ear_mites": "yes"}},
     "expected_urgency": "GREEN",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["귀", "진드기"]
+    "expected_summary_keywords": ["귀", "진드기"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "가끔 구토 (GREEN — GASTROINTESTINAL)",
@@ -393,7 +463,9 @@
     "expected_extracted": {"GASTROINTESTINAL": {"vomiting": "occasional", "appetite": "normal"}},
     "expected_urgency": "GREEN",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["구토"]
+    "expected_summary_keywords": ["구토"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "경미한 설사 (GREEN — GASTROINTESTINAL)",
@@ -404,7 +476,9 @@
     "expected_extracted": {"GASTROINTESTINAL": {"diarrhea": "mild", "appetite": "normal"}},
     "expected_urgency": "GREEN",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["설사"]
+    "expected_summary_keywords": ["설사"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "눈 충혈 경도 (GREEN — EYE)",
@@ -415,7 +489,9 @@
     "expected_extracted": {"EYE": {"redness": "mild"}},
     "expected_urgency": "GREEN",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["눈", "충혈"]
+    "expected_summary_keywords": ["눈", "충혈"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "가벼운 절뚝임 (GREEN — ORTHOPEDIC)",
@@ -426,7 +502,9 @@
     "expected_extracted": {"ORTHOPEDIC": {"ambulation": "limping"}},
     "expected_urgency": "GREEN",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["절뚝"]
+    "expected_summary_keywords": ["절뚝"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "구강 악취 및 치석 (GREEN — ORAL_DENTAL)",
@@ -437,6 +515,8 @@
     "expected_extracted": {"ORAL_DENTAL": {"halitosis_tartar": "yes"}},
     "expected_urgency": "GREEN",
     "expected_red_flag": false,
-    "expected_summary_keywords": ["치석"]
+    "expected_summary_keywords": ["치석"],
+    "human_label": null,
+    "human_note": null
   }
 ]

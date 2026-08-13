@@ -83,6 +83,14 @@ def _load_chart_cases() -> list[dict]:
     return []
 
 
+def _load_reception_cases() -> list[dict]:
+    import json
+    p = _EVAL_CASES_DIR / "reception_eval_cases.json"
+    if p.exists():
+        return json.loads(p.read_text(encoding="utf-8"))
+    return []
+
+
 async def _llm_judge_keywords(text: str, keywords: list[str]) -> list[bool]:
     """하이브리드 게이트: 1차 string match → 실패 시에만 LLM 의미 판단."""
     if not keywords or not text.strip():
@@ -773,7 +781,7 @@ async def run_orchestrator_eval(db: AsyncSession) -> dict:
 
 # ── 접수 에이전트 평가 ────────────────────────────────────────────
 
-async def run_reception_eval(db: AsyncSession) -> dict:
+async def run_reception_eval(db: AsyncSession, test_cases: list[dict] | None = None) -> dict:
     """응대 AI 평가 — MCP 도구 선택 정확도 (병원정보/운영시간/슬롯/무관질문)."""
     from sqlalchemy import select as _select
 
@@ -800,24 +808,17 @@ async def run_reception_eval(db: AsyncSession) -> dict:
         })
         return {"agent": "reception", "overall": "SKIPPED", "checks": checks, "metrics": {}}
 
-    _TOOL_CASES = [
-        ("병원 위치 질문",        "병원 어디 있어요?",                    "get_hospital_info"),
-        ("운영시간 질문",         "오늘 몇 시까지 운영해요?",             "get_operating_hours"),
-        ("예약 슬롯 질문",        "예약 언제 할 수 있어요?",              "find_open_slots"),
-        ("주소 표현 변형",        "병원 주소 알려주세요",                 "get_hospital_info"),
-        ("진료시간 표현 변형",    "진료 시간이 어떻게 돼요?",             "get_operating_hours"),
-        ("빈 슬롯 표현 변형",     "이번 주 예약 가능한 시간 있어요?",     "find_open_slots"),
-        ("무관 질문(날씨)",       "오늘 날씨 어때요?",                    None),
-        ("무관 질문(음식)",       "강아지 밥은 하루에 몇 번 줘야 해요?",  None),
-        ("의사 소개 질문",        "원장 선생님은 어떤 분이에요?",         "get_hospital_info"),
-        ("휴진 여부 질문",        "이번 주 토요일 진료 하나요?",          "get_operating_hours"),
-    ]
+    cases = test_cases or _load_reception_cases()
+    if not cases:
+        checks.append({"item": "MCP 도구 선택", "status": "SKIPPED", "detail": "테스트 케이스 없음"})
+        return {"agent": "reception", "overall": "SKIPPED", "checks": checks, "metrics": {}}
 
     from ai.agents.reception.agent import reception as _reception_agent
 
     tool_hit = 0
     case_checks: list[dict] = []
-    for desc, msg, expected_tool in _TOOL_CASES:
+    for case in cases:
+        desc, msg, expected_tool = case["name"], case["message"], case.get("expected_tool")
         ctx = SessionContext(
             session_id=0, userid=0, petid=0, pet_info={},
             hospitalid=hospitalid, emrid=None, scheduleid=None,
@@ -846,12 +847,12 @@ async def run_reception_eval(db: AsyncSession) -> dict:
         except Exception as exc:
             case_checks.append({"item": f"도구 선택 ({desc})", "status": "WARN", "detail": f"오류: {exc}"})
 
-    acc = tool_hit / len(_TOOL_CASES)
+    acc = tool_hit / len(cases)
     checks = [
         {
             "item": "MCP 도구 선택 (전체)",
             "status": "PASS" if acc == 1.0 else "WARN",
-            "detail": f"{tool_hit}/{len(_TOOL_CASES)} ({acc:.0%}) — 기준 100%",
+            "detail": f"{tool_hit}/{len(cases)} ({acc:.0%}) — 기준 100%",
         },
         *case_checks,
     ]
@@ -861,7 +862,7 @@ async def run_reception_eval(db: AsyncSession) -> dict:
         "agent": "reception",
         "overall": overall,
         "checks": checks,
-        "metrics": {"tool_accuracy": round(acc, 3), "total_cases": len(_TOOL_CASES)},
+        "metrics": {"tool_accuracy": round(acc, 3), "total_cases": len(cases)},
     }
 
 

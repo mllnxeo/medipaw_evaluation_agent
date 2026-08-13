@@ -18,7 +18,9 @@
       {"role": "user",  "content": "없어요, 그냥 밥 안 먹고 기운이 없어요"}
     ],
     "expected_keywords": ["구토", "식욕", "기운"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "다리 절음 (정형외과)",
@@ -39,7 +41,9 @@
       {"role": "user",  "content": "네, 등 부분을 만지면 많이 아파해요"}
     ],
     "expected_keywords": ["파행", "다리", "통증"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "피부 가려움 (피부과)",
@@ -60,7 +64,9 @@
       {"role": "user",  "content": "귀 안쪽이 좀 빨개진 것 같아요"}
     ],
     "expected_keywords": ["가려움", "긁", "귀"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "심장 질환 (심장내과)",
@@ -81,7 +87,9 @@
       {"role": "user",  "content": "네, 가끔 거친 소리가 나요"}
     ],
     "expected_keywords": ["기침", "호흡", "운동"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "발작 (신경과)",
@@ -102,7 +110,9 @@
       {"role": "user",  "content": "눈은 뜨는데 멍하게 있어요"}
     ],
     "expected_keywords": ["발작", "경련", "의식"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "안구 충혈 (안과)",
@@ -123,7 +133,9 @@
       {"role": "user",  "content": "네, 계속 앞발로 눈을 비벼요"}
     ],
     "expected_keywords": ["충혈", "눈물", "눈"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "예방접종 (건강검진)",
@@ -144,7 +156,9 @@
       {"role": "user",  "content": "3개월 전에 맞았어요"}
     ],
     "expected_keywords": ["예방접종", "건강"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "고양이 반복 구토 (소화기 — 고양이)",
@@ -167,7 +181,9 @@
       {"role": "user",  "content": "좀 말라 보이고 기운도 전보다 없어요"}
     ],
     "expected_keywords": ["구토", "체중", "식욕"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "고양이 호흡곤란 (호흡기 — 고양이)",
@@ -188,7 +204,9 @@
       {"role": "user",  "content": "오늘 아침부터요, 그냥 앉아 있는데도 힘들어 보여요"}
     ],
     "expected_keywords": ["호흡", "흉막", "복식호흡"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "교통사고 외상 (외상)",
@@ -209,7 +227,9 @@
       {"role": "user",  "content": "다리 쪽에 상처가 있고 피가 나요 다리가 이상하게 꺾인 것 같아요"}
     ],
     "expected_keywords": ["외상", "골절", "출혈"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "신장 질환 의심 — 다음다뇨 (비뇨기 — 고양이)",
@@ -232,7 +252,9 @@
       {"role": "user",  "content": "가끔 토하고 예전보다 덜 활발한 것 같아요"}
     ],
     "expected_keywords": ["다뇨", "신장", "혈액검사"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "당뇨 의심 — 다음다뇨 (내분비 — 강아지)",
@@ -253,7 +275,9 @@
       {"role": "user",  "content": "산책 가기 싫어하고 금방 지쳐해요"}
     ],
     "expected_keywords": ["다뇨", "당뇨", "혈당"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "외이염 (귀 — 강아지)",
@@ -274,7 +298,9 @@
       {"role": "user",  "content": "일주일 됐어요 왼쪽 귀가 특히 심해요"}
     ],
     "expected_keywords": ["외이염", "귀", "분비물"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "아나필락시스 의심 (알레르기 반응 — 강아지)",
@@ -295,7 +321,9 @@
       {"role": "user",  "content": "좀 헐떡이는 것 같아요 온 몸에 두드러기도 나요"}
     ],
     "expected_keywords": ["아나필락시스", "알레르기", "부종"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "고양이 요도폐색 (비뇨기 — 고양이)",
@@ -316,7 +344,9 @@
       {"role": "user",  "content": "배를 만지면 엄청 아파해요 울어요"}
     ],
     "expected_keywords": ["요도폐색", "방광", "배뇨"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "구강 질환 — 치주염 (구강 — 강아지)",
@@ -337,7 +367,9 @@
       {"role": "user",  "content": "딱딱한 사료 먹을 때 씹기 힘들어하는 것 같아요"}
     ],
     "expected_keywords": ["치주염", "구취", "치석"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "관절염 — 노령견 (정형외과)",
@@ -360,7 +392,9 @@
       {"role": "user",  "content": "뒷다리 엉덩이 쪽을 만지면 아파해요"}
     ],
     "expected_keywords": ["관절염", "관절", "뒷다리"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "결막염 (안과 — 고양이)",
@@ -381,7 +415,9 @@
       {"role": "user",  "content": "맞아요 콧물도 좀 나요 밥은 잘 먹어요"}
     ],
     "expected_keywords": ["결막염", "눈곱", "충혈"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "척추 디스크 악화 (신경과)",
@@ -402,6 +438,8 @@
       {"role": "user",  "content": "소변을 못 보는 것 같아요 배에 힘을 주는데 안 나오는 것 같아요"}
     ],
     "expected_keywords": ["디스크", "마비", "배뇨"],
-    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"]
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   }
 ]

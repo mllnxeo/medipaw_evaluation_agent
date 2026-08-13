@@ -10,7 +10,9 @@
       "is_initial_visit": true
     },
     "expected_duration_min": 45,
-    "expected_duration_max": 70
+    "expected_duration_max": 70,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "RED — 복합 외상 (재진)",
@@ -23,7 +25,9 @@
       "is_initial_visit": false
     },
     "expected_duration_min": 45,
-    "expected_duration_max": 70
+    "expected_duration_max": 70,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "RED — 요도폐색 고양이 (초진)",
@@ -36,7 +40,9 @@
       "is_initial_visit": true
     },
     "expected_duration_min": 45,
-    "expected_duration_max": 70
+    "expected_duration_max": 70,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "RED — GDV 위염전 대형견 (초진)",
@@ -49,7 +55,9 @@
       "is_initial_visit": true
     },
     "expected_duration_min": 50,
-    "expected_duration_max": 75
+    "expected_duration_max": 75,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "RED — 열사병 (초진)",
@@ -62,7 +70,9 @@
       "is_initial_visit": true
     },
     "expected_duration_min": 40,
-    "expected_duration_max": 70
+    "expected_duration_max": 70,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "ORANGE — 중등도 호흡곤란 (초진)",
@@ -75,7 +85,9 @@
       "is_initial_visit": true
     },
     "expected_duration_min": 35,
-    "expected_duration_max": 60
+    "expected_duration_max": 60,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "ORANGE — 위확장 의심 (초진)",
@@ -88,7 +100,9 @@
       "is_initial_visit": true
     },
     "expected_duration_min": 40,
-    "expected_duration_max": 65
+    "expected_duration_max": 65,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "ORANGE — 혈토 (초진)",
@@ -101,7 +115,9 @@
       "is_initial_visit": true
     },
     "expected_duration_min": 35,
-    "expected_duration_max": 60
+    "expected_duration_max": 60,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "ORANGE — 고양이 혈변 (초진)",
@@ -114,7 +130,9 @@
       "is_initial_visit": true
     },
     "expected_duration_min": 35,
-    "expected_duration_max": 60
+    "expected_duration_max": 60,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "YELLOW — 잦은 기침 (재진)",
@@ -127,7 +145,9 @@
       "is_initial_visit": false
     },
     "expected_duration_min": 20,
-    "expected_duration_max": 40
+    "expected_duration_max": 40,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "YELLOW — 피부 알레르기 고양이 (초진)",
@@ -140,7 +160,9 @@
       "is_initial_visit": true
     },
     "expected_duration_min": 20,
-    "expected_duration_max": 45
+    "expected_duration_max": 45,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "YELLOW — 혈뇨 고양이 (초진)",
@@ -153,7 +175,9 @@
       "is_initial_visit": true
     },
     "expected_duration_min": 20,
-    "expected_duration_max": 50
+    "expected_duration_max": 50,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "YELLOW — 경추 디스크 증상 (재진)",
@@ -166,7 +190,9 @@
       "is_initial_visit": false
     },
     "expected_duration_min": 25,
-    "expected_duration_max": 45
+    "expected_duration_max": 45,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "YELLOW — 반복 구토 고양이 (초진)",
@@ -179,7 +205,9 @@
       "is_initial_visit": true
     },
     "expected_duration_min": 20,
-    "expected_duration_max": 45
+    "expected_duration_max": 45,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "GREEN — 정기 건강검진 (재진)",
@@ -192,7 +220,9 @@
       "is_initial_visit": false
     },
     "expected_duration_min": 20,
-    "expected_duration_max": 40
+    "expected_duration_max": 40,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "GREEN — 연간 예방접종 (재진)",
@@ -205,7 +235,9 @@
       "is_initial_visit": false
     },
     "expected_duration_min": 15,
-    "expected_duration_max": 35
+    "expected_duration_max": 35,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "GREEN — 중성화 수술 전 검진 (초진)",
@@ -218,7 +250,9 @@
       "is_initial_visit": true
     },
     "expected_duration_min": 20,
-    "expected_duration_max": 40
+    "expected_duration_max": 40,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "GREEN — 기침 경과 관찰 (재진)",
@@ -231,7 +265,9 @@
       "is_initial_visit": false
     },
     "expected_duration_min": 15,
-    "expected_duration_max": 35
+    "expected_duration_max": 35,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "GREEN — 구강 위생 상담 (초진)",
@@ -244,7 +280,9 @@
       "is_initial_visit": true
     },
     "expected_duration_min": 15,
-    "expected_duration_max": 40
+    "expected_duration_max": 40,
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "GREEN — 고양이 정기 검진 (재진)",
@@ -257,6 +295,8 @@
       "is_initial_visit": false
     },
     "expected_duration_min": 20,
-    "expected_duration_max": 40
+    "expected_duration_max": 40,
+    "human_label": null,
+    "human_note": null
   }
 ]

@@ -1,0 +1,12 @@
+[
+  {"name": "병원 위치 질문", "message": "병원 어디 있어요?", "expected_tool": "get_hospital_info", "human_label": null, "human_note": null},
+  {"name": "운영시간 질문", "message": "오늘 몇 시까지 운영해요?", "expected_tool": "get_operating_hours", "human_label": null, "human_note": null},
+  {"name": "예약 슬롯 질문", "message": "예약 언제 할 수 있어요?", "expected_tool": "find_open_slots", "human_label": null, "human_note": null},
+  {"name": "주소 표현 변형", "message": "병원 주소 알려주세요", "expected_tool": "get_hospital_info", "human_label": null, "human_note": null},
+  {"name": "진료시간 표현 변형", "message": "진료 시간이 어떻게 돼요?", "expected_tool": "get_operating_hours", "human_label": null, "human_note": null},
+  {"name": "빈 슬롯 표현 변형", "message": "이번 주 예약 가능한 시간 있어요?", "expected_tool": "find_open_slots", "human_label": null, "human_note": null},
+  {"name": "무관 질문(날씨)", "message": "오늘 날씨 어때요?", "expected_tool": null, "human_label": null, "human_note": null},
+  {"name": "무관 질문(음식)", "message": "강아지 밥은 하루에 몇 번 줘야 해요?", "expected_tool": null, "human_label": null, "human_note": null},
+  {"name": "의사 소개 질문", "message": "원장 선생님은 어떤 분이에요?", "expected_tool": "get_hospital_info", "human_label": null, "human_note": null},
+  {"name": "휴진 여부 질문", "message": "이번 주 토요일 진료 하나요?", "expected_tool": "get_operating_hours", "human_label": null, "human_note": null}
+]

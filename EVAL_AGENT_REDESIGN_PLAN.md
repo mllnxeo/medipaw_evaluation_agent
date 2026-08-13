@@ -178,11 +178,22 @@ class CheckResult(TypedDict):
 
 | 에이전트 | 현재 케이스 수(추정) | 목표 |
 |---|---|---|
-| Triage | 15 | 40~50 |
+| Triage | 40 (최초 작성 시 추정치 15였으나 Phase 1에서 실측, 이미 목표 하한 도달) | 40~50 |
 | Chart | 19 | 30~40 |
 | Schedule | 20 | 20~30 |
 | Reception | 10 | 20 |
 | 경과 필터 | 100 | 유지 |
+| Orchestrator[^1] | 23 | 20~30 |
+
+[^1]: 원래 5개 에이전트(Triage/Schedule/Chart/Reception/경과필터) 표엔 없었으나,
+      `orchestrator_eval_cases.json`도 lint 대상 골든 데이터셋이라 Phase
+      1에서 추가(2026-08-13). 목표치 20~30 산정 근거: orchestrator는
+      Reception처럼 "메시지 → 처리 라우팅" 분류형 태스크이지만
+      phase(PRE_BOOKING/BOOKED) × flow(IDLE/TRIAGING/SCHEDULING/
+      AWAITING_BOOKING_CONFIRM) 조합이 Reception의 단순 툴-선택보다
+      다양해 Reception(20)보다는 여유를 둠. 다만 Triage/Chart처럼 임상
+      카테고리별 세분화가 필요한 성격은 아니라 그보다는 낮게 잡아
+      Schedule과 동일한 20~30 구간으로 설정. 현재 23개로 이미 하한 도달.
 
 ### 케이스 스키마
 
@@ -421,6 +432,13 @@ Dependabot으로 알려진 취약점을 CI에서 자동 스캔한다.
 - 100개 규모의 데이터셋은 통계적으로 여전히 작은 표본이며, 희귀 케이스
   조합까지 커버하지 못할 수 있다.
 
+### Known Issues (범위 밖, 향후 처리)
+
+- `ai/agents/eval_cases/latency_test_cases.json`의 한글 텍스트(`pet_info.name`,
+  `user_message` 등)가 인코딩이 깨진 채로 저장돼 있음(Phase 1에서 발견,
+  2026-08-13) — 이 파일은 골든 데이터셋 범위 밖(순수 지연시간/토큰 벤치마크용)이라
+  이번 재작업에서는 손대지 않고 사실만 기록해둠.
+
 ---
 
 ## 10. 사람 개입 경로 (Escalation)
@@ -461,7 +479,7 @@ Dependabot으로 알려진 취약점을 CI에서 자동 스캔한다.
 | Phase | 내용 | 시작 조건 | 완료 조건 |
 |---|---|---|---|
 | 0 | 버그 재현 테스트 작성 → 수정 | 2번 섹션 버그 목록 확정 | 2번 섹션 1~4번(순수 로직 버그) 재현 테스트 통과 — 5~8번(구조화 출력 전환/rate limit/RBAC/의존성 상한)은 각각 Phase 7·8에서 다룸(2026-08-12 범위 확정, 완료) |
-| 1 | 데이터셋 스키마 확장 (`human_label`, `human_note`) | Phase 0 완료 | 모든 `eval_cases/*.json`에 필드 존재 + lint 통과 |
+| 1 | 데이터셋 스키마 확장 (`human_label`, `human_note`) | Phase 0 완료 | `triage`/`chart`/`schedule`/`followup`/`orchestrator`/`reception` 6개 `eval_cases/*.json`(`latency_test_cases.json` 제외 — 골든 데이터셋 아님)에 필드 존재 + `lint_eval_cases.py` 통과 (완료, 2026-08-13) |
 | 2 | 1차 20~30개 합성 케이스 작성 + 라벨링 | Phase 1 완료 | 에이전트별 최소 20개 라벨링 완료 |
 | 3 | judge 일치율 측정 스크립트 작성/실행 | Phase 2 완료 | 일치율 수치 산출 + FAIL 케이스 recall 별도 산출 |
 | 4 | 판정 프롬프트 보정 (반복) | Phase 3 완료 | 일치율이 목표 수준에서 안정화 |
@@ -542,3 +560,4 @@ Dependabot으로 알려진 취약점을 CI에서 자동 스캔한다.
 |---|---|
 | 2026-08-12 | 최초 작성 |
 | 2026-08-12 | Phase 0 완료 — 버그 1~4 재현 테스트 및 수정, text_match.py 신규, PHASE0_CHECKLIST.md 신규. 10개 재현 테스트 + 전체 스위트 136 passed 확인. |
+| 2026-08-13 | Phase 1 완료 — eval_cases 6개 파일(212개 케이스)에 human_label/human_note 필드 추가, reception_eval_cases.json 신규(agent_bench.py 하드코딩 분리), lint_eval_cases.py 신규, PHASE1_CHECKLIST.md 신규. orchestrator를 3번 섹션 표에 추가(목표 20~30). 로더 검증 테스트 3개 추가 + 전체 스위트 139 passed 확인. |

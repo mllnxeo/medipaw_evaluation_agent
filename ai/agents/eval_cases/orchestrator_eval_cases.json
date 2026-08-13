@@ -4,160 +4,206 @@
     "phase": "BOOKED",
     "flow": "IDLE",
     "message": "오늘 구토 3번 했어요",
-    "allowed": ["followup_filter"]
+    "allowed": ["followup_filter"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "BOOKED — 병원 운영시간 질문",
     "phase": "BOOKED",
     "flow": "IDLE",
     "message": "병원 몇 시까지 해요?",
-    "allowed": ["reception", "followup_filter"]
+    "allowed": ["reception", "followup_filter"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "BOOKED — 주차 안내 질문",
     "phase": "BOOKED",
     "flow": "IDLE",
     "message": "병원 주차 가능한가요?",
-    "allowed": ["reception"]
+    "allowed": ["reception"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "BOOKED — 예약 시간 변경 요청",
     "phase": "BOOKED",
     "flow": "IDLE",
     "message": "예약 시간을 더 빠른 걸로 바꿀 수 있을까요?",
-    "allowed": ["followup_filter"]
+    "allowed": ["followup_filter"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "BOOKED — 증상 악화 보고",
     "phase": "BOOKED",
     "flow": "IDLE",
     "message": "아까보다 더 심해진 것 같아요 숨을 너무 힘들게 쉬어요",
-    "allowed": ["followup_filter"]
+    "allowed": ["followup_filter"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "BOOKED — 수의사 소개 질문",
     "phase": "BOOKED",
     "flow": "IDLE",
     "message": "원장 선생님은 어떤 분이에요?",
-    "allowed": ["reception"]
+    "allowed": ["reception"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "BOOKED — 잡담 (무관 주제)",
     "phase": "BOOKED",
     "flow": "IDLE",
     "message": "오늘 날씨가 너무 좋네요",
-    "allowed": ["redirect", "reception"]
+    "allowed": ["redirect", "reception"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "SCHEDULING — 슬롯 선택 고정",
     "phase": "PRE_BOOKING",
     "flow": "SCHEDULING",
     "message": "다음주 월요일로요",
-    "allowed": ["schedule"]
+    "allowed": ["schedule"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "SCHEDULING — 다른 날짜 요청",
     "phase": "PRE_BOOKING",
     "flow": "SCHEDULING",
     "message": "화요일 오후로 바꿔주세요",
-    "allowed": ["schedule"]
+    "allowed": ["schedule"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "예약확인 게이트 — 네",
     "phase": "PRE_BOOKING",
     "flow": "AWAITING_BOOKING_CONFIRM",
     "message": "네",
-    "allowed": ["triage"]
+    "allowed": ["triage"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "예약확인 게이트 — 아니요",
     "phase": "PRE_BOOKING",
     "flow": "AWAITING_BOOKING_CONFIRM",
     "message": "아니요",
-    "allowed": ["triage"]
+    "allowed": ["triage"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "PRE — 발작 증상",
     "phase": "PRE_BOOKING",
     "flow": "IDLE",
     "message": "발작 중이에요",
-    "allowed": ["triage"]
+    "allowed": ["triage"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "PRE — 호흡 이상",
     "phase": "PRE_BOOKING",
     "flow": "IDLE",
     "message": "호흡이 이상해요",
-    "allowed": ["triage"]
+    "allowed": ["triage"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "PRE — 독성 물질 섭취",
     "phase": "PRE_BOOKING",
     "flow": "IDLE",
     "message": "강아지가 포도를 먹었어요",
-    "allowed": ["triage"]
+    "allowed": ["triage"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "PRE — 구토 증상",
     "phase": "PRE_BOOKING",
     "flow": "IDLE",
     "message": "어제부터 계속 토해요",
-    "allowed": ["triage"]
+    "allowed": ["triage"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "PRE — 병원 위치 질문",
     "phase": "PRE_BOOKING",
     "flow": "IDLE",
     "message": "병원 어디 있어요?",
-    "allowed": ["reception"]
+    "allowed": ["reception"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "PRE — 전화번호 질문",
     "phase": "PRE_BOOKING",
     "flow": "IDLE",
     "message": "병원 전화번호 알려주세요",
-    "allowed": ["reception"]
+    "allowed": ["reception"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "PRE — 예약 바로 원함 (문진 없이)",
     "phase": "PRE_BOOKING",
     "flow": "IDLE",
     "message": "바로 예약하고 싶어요",
-    "allowed": ["triage"]
+    "allowed": ["triage"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "PRE — 잡담",
     "phase": "PRE_BOOKING",
     "flow": "IDLE",
     "message": "오늘 날씨 좋네요",
-    "allowed": ["reception", "redirect"]
+    "allowed": ["reception", "redirect"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "PRE — 무관 질문",
     "phase": "PRE_BOOKING",
     "flow": "IDLE",
     "message": "강아지 밥은 하루에 몇 번 줘야 해요?",
-    "allowed": ["redirect", "reception"]
+    "allowed": ["redirect", "reception"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "TRIAGING — 문진 중 증상 답변",
     "phase": "PRE_BOOKING",
     "flow": "TRIAGING",
     "message": "어제부터요",
-    "allowed": ["triage"]
+    "allowed": ["triage"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "TRIAGING — 문진 중 추가 증상",
     "phase": "PRE_BOOKING",
     "flow": "TRIAGING",
     "message": "밥도 잘 안 먹어요",
-    "allowed": ["triage"]
+    "allowed": ["triage"],
+    "human_label": null,
+    "human_note": null
   },
   {
     "name": "TRIAGING — 문진 중 화제 전환 (병원 위치)",
     "phase": "PRE_BOOKING",
     "flow": "TRIAGING",
     "message": "그런데 병원이 어디 있어요?",
-    "allowed": ["reception"]
+    "allowed": ["reception"],
+    "human_label": null,
+    "human_note": null
   }
 ]
