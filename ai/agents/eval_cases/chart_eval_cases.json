@@ -441,5 +441,28 @@
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
     "human_label": null,
     "human_note": null
+  },
+  {
+    "name": "이물질 섭취 — 장폐색 의심 (소화기 응급)",
+    "pet": {"name": "보리", "species": "강아지", "breed": "비글", "age": 2, "weight_kg": 9.0},
+    "triage": {
+      "urgency_level": "ORANGE",
+      "symptom_keywords": ["구토", "복부팽만", "식욕부진"],
+      "symptom_onset": "1일 전",
+      "suspected_diseases": ["장폐색", "이물섭취"],
+      "red_flags": ["반복 구토"],
+      "symptom_summary": "어제 장난감 조각을 삼킨 뒤 반복 구토, 배가 부풀어 오름"
+    },
+    "chat_history": [
+      {"role": "user",  "content": "강아지가 어제 장난감 조각을 삼킨 것 같은데 계속 토해요"},
+      {"role": "assistant", "content": "몇 번 정도 토했나요? 삼킨 물건 크기는 어느 정도인가요?"},
+      {"role": "user",  "content": "5번 정도 토했고, 손톱만한 플라스틱 조각이었어요"},
+      {"role": "assistant", "content": "배를 만지면 아파하거나 딱딱한 느낌이 있나요?"},
+      {"role": "user",  "content": "네, 배가 빵빵하고 만지면 낑낑거려요"}
+    ],
+    "expected_keywords": ["이물", "구토", "복부"],
+    "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
+    "human_label": null,
+    "human_note": null
   }
 ]

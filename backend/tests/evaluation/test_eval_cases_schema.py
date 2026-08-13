@@ -14,11 +14,11 @@ from ai.agents.evaluation import agent_bench
 
 _LOADERS_AND_COUNTS = [
     (agent_bench._load_triage_cases, 40),
-    (agent_bench._load_chart_cases, 19),
+    (agent_bench._load_chart_cases, 20),
     (agent_bench._load_schedule_cases, 20),
     (agent_bench._load_followup_cases, 100),
     (agent_bench._load_orchestrator_cases, 23),
-    (agent_bench._load_reception_cases, 10),
+    (agent_bench._load_reception_cases, 20),
 ]
 _LOADER_IDS = [loader.__name__ for loader, _ in _LOADERS_AND_COUNTS]
 
@@ -29,15 +29,24 @@ def test_loader_returns_expected_case_count(loader, expected_count):
     assert len(cases) == expected_count
 
 
+_VALID_LABELS = {"PASS", "FAIL", "SKIP"}
+
+
 @pytest.mark.parametrize("loader,expected_count", _LOADERS_AND_COUNTS, ids=_LOADER_IDS)
 def test_loader_cases_have_human_label_and_human_note_fields(loader, expected_count):
+    """human_label/human_note 필드 존재 + (라벨링됐다면) 값 형식만 확인한다.
+
+    Phase 2에서 라벨링이 진행 중이라 null(미라벨)과 PASS/FAIL/SKIP(라벨링 완료)이
+    섞여 있는 게 정상 상태 — lint_eval_cases.py와 동일한 기준으로 검증한다.
+    """
     cases = loader()
     for i, case in enumerate(cases):
         assert "human_label" in case, f"[{i}]: human_label 없음"
         assert "human_note" in case, f"[{i}]: human_note 없음"
-        # Phase 1에서는 아직 실제 라벨링 전(Phase 2) — null이 정상 상태
-        assert case["human_label"] is None
-        assert case["human_note"] is None
+        label = case["human_label"]
+        assert label is None or label in _VALID_LABELS, f"[{i}]: human_label 값이 잘못됨 ({label!r})"
+        if label is not None:
+            assert case["human_note"], f"[{i}]: human_label={label}인데 human_note가 비어 있음"
 
 
 def test_reception_cases_preserve_original_tool_expectations():

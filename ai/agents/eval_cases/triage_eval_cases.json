@@ -9,8 +9,8 @@
     "expected_urgency": "RED",
     "expected_red_flag": true,
     "expected_summary_keywords": ["발작"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "3분 이상 지속되는 발작은 즉시 응급 대상이라는 게 일반적 기준이고, 발화도 지속 상태를 명확히 나타냄"
   },
   {
     "name": "심한 호흡곤란 (RED — RESPIRATORY)",
@@ -22,8 +22,8 @@
     "expected_urgency": "RED",
     "expected_red_flag": true,
     "expected_summary_keywords": ["호흡"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "호흡 응급 신호(입 벌리고 헐떡임, 가슴 들썩임) 묘사가 명확함"
   },
   {
     "name": "의식불명 (RED — NEUROLOGIC)",
@@ -35,8 +35,8 @@
     "expected_urgency": "RED",
     "expected_red_flag": true,
     "expected_summary_keywords": ["의식"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "반응 없음은 명시적 응급 신호, 발화도 명확함"
   },
   {
     "name": "요도폐색 (RED — UROGENITAL)",
@@ -48,8 +48,8 @@
     "expected_urgency": "RED",
     "expected_red_flag": true,
     "expected_summary_keywords": ["소변"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "요도폐색은 성별 무관하게 증상만으로 응급 판정이 가능한 상황이고, 엔진도 gender를 애초에 참고하지 않으므로 케이스 자체엔 문제없음"
   },
   {
     "name": "자일리톨 섭취 (RED — TOXIN)",
@@ -61,8 +61,8 @@
     "expected_urgency": "RED",
     "expected_red_flag": true,
     "expected_summary_keywords": ["자일리톨"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "자일리톨은 개에게 급성 저혈당 유발, 섭취량 불명확해도 응급 대응이 맞음"
   },
   {
     "name": "GDV 위염전 의심 (RED — GASTROINTESTINAL)",
@@ -74,8 +74,8 @@
     "expected_urgency": "RED",
     "expected_red_flag": true,
     "expected_summary_keywords": ["복부", "팽창"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "GDV 전형 증상(복부 팽창, 헛구역질, 못 일어남, 불안) 조합과 정확히 일치, 그레이트데인도 고위험 품종이라 케이스 설정 타당함"
   },
   {
     "name": "쇼크 (RED — CARDIOVASCULAR)",
@@ -87,8 +87,8 @@
     "expected_urgency": "RED",
     "expected_red_flag": true,
     "expected_summary_keywords": ["쇼크", "잇몸"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "쇼크의 전형 신호(창백한 잇몸, 약한 호흡, 차가운 사지, 의식은 있으나 무기력)와 정확히 일치"
   },
   {
     "name": "포도 섭취 (RED — TOXIN)",
@@ -100,8 +100,8 @@
     "expected_urgency": "RED",
     "expected_red_flag": true,
     "expected_summary_keywords": ["포도"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "포도는 특이체질적 독성이라 양과 무관하게 즉시 대응이 원칙, 섭취량 불명확해도 케이스로 타당함"
   },
   {
     "name": "난산 (RED — REPRODUCTIVE)",
@@ -113,8 +113,8 @@
     "expected_urgency": "RED",
     "expected_red_flag": true,
     "expected_summary_keywords": ["분만", "난산"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "머리가 보인 지 1시간 넘게 진행 안 되는 건 표준적인 난산 응급 기준에 해당(다만 참고 자료를 명확히 못 찾아 확신도는 다른 케이스보다 낮음)"
   },
   {
     "name": "열사병 (RED — ENVIRONMENTAL)",
@@ -126,8 +126,8 @@
     "expected_urgency": "RED",
     "expected_red_flag": true,
     "expected_summary_keywords": ["열사병"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "열사병 전형 증상(과도한 헐떡임, 빨간 잇몸, 고체온, 못 일어섬)과 일치, 차 방치 원인도 전형적, 북방견종 설정도 적절"
   },
   {
     "name": "중등도 호흡곤란 (ORANGE — RESPIRATORY)",
@@ -139,8 +139,8 @@
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
     "expected_summary_keywords": ["호흡"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "RED 케이스의 격한 표현(입 벌리고 헐떡, 가슴 들썩)과 명확히 구분되는 강도(빠른 호흡, 힘들어 보임)로 잘 나뉘어 있음"
   },
   {
     "name": "기도 협착음 (ORANGE — RESPIRATORY)",
@@ -152,8 +152,8 @@
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
     "expected_summary_keywords": ["소리"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "불독은 협착음에 취약한 단두종이라 불독+협착음 조합이 임상적으로 맞고 케이스로도 자연스러움, 통상 즉시 응급실행보다 빠른 평가 필요 수준"
   },
   {
     "name": "혈성 비루 (ORANGE — RESPIRATORY)",
@@ -165,8 +165,8 @@
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
     "expected_summary_keywords": ["코", "출혈"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "코피 단독 증상, 동반 증상 없으므로 ORANGE는 적절함"
   },
   {
     "name": "혈변 (ORANGE — GASTROINTESTINAL)",
@@ -178,8 +178,8 @@
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
     "expected_summary_keywords": ["혈변"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "\"아침부터 3번\" 반복이 ORANGE 기준에 맞고, 무기력·구토 등 동반 증상이 없어 RED로 격상될 근거는 없음"
   },
   {
     "name": "혈토 (ORANGE — GASTROINTESTINAL)",
@@ -191,8 +191,8 @@
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
     "expected_summary_keywords": ["혈토"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "\"한 번 더 토할 것 같다\"는 활성 출혈 진행 신호로 케이스로 타당함"
   },
   {
     "name": "의식 저하 (ORANGE — NEUROLOGIC)",
@@ -204,8 +204,8 @@
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
     "expected_summary_keywords": ["의식", "반응"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "dull(반응 느려짐, 눈빛 멍함, 못 일어섬)과 3번의 unresponsive(완전 무반응)가 명확히 구분됨. 노령견 설정도 자연스러움"
   },
   {
     "name": "얼굴 부종 — 알레르기 (ORANGE — SKIN)",
@@ -217,8 +217,8 @@
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
     "expected_summary_keywords": ["부종"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "호흡곤란 언급 없음. 실제 있었으면 보호자가 먼저 말했을 가능성이 높아 \"언급 없음=정상\"으로 추론 가능(단, 100% 확실친 않음)"
   },
   {
     "name": "초콜릿 섭취 (ORANGE — TOXIN)",
@@ -230,8 +230,8 @@
     "expected_urgency": "ORANGE",
     "expected_red_flag": false,
     "expected_summary_keywords": ["초콜릿"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "FAIL",
+    "human_note": "체중 대비 섭취량 계산 시 위험 구간. 다크초콜릿(온스당 테오브로민 150~160mg) 반 판(~50g)을 포메라니안(2~3kg)이 먹으면 kg당 약 90mg으로 60~100mg/kg 중증 독성 구간에 해당. 이미 흥분·빈맥 증상이 발현된 상태라 ORANGE보다 RED에 더 가까움 — 소형견+다량 섭취+증상 발현이 겹치는 조합이라 케이스 등급 재검토 필요(2026-08-13 라벨링 중 발견, 처리 방향 논의 중)"
   },
   {
     "name": "경도 호흡곤란 (YELLOW — RESPIRATORY)",
@@ -243,8 +243,8 @@
     "expected_urgency": "YELLOW",
     "expected_red_flag": false,
     "expected_summary_keywords": ["호흡"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "\"심하진 않다\"는 표현이 RED(2번)·ORANGE(11번)보다 확실히 약해서 YELLOW와 일치"
   },
   {
     "name": "잦은 기침 (YELLOW — RESPIRATORY)",
@@ -256,8 +256,8 @@
     "expected_urgency": "YELLOW",
     "expected_red_flag": false,
     "expected_summary_keywords": ["기침"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "식욕 정상 유지가 핵심. 소형견 만성 기침은 흔한 임상 양상"
   },
   {
     "name": "안정 시 빈호흡 (YELLOW — RESPIRATORY)",

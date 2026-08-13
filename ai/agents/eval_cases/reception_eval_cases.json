@@ -8,5 +8,15 @@
   {"name": "무관 질문(날씨)", "message": "오늘 날씨 어때요?", "expected_tool": null, "human_label": null, "human_note": null},
   {"name": "무관 질문(음식)", "message": "강아지 밥은 하루에 몇 번 줘야 해요?", "expected_tool": null, "human_label": null, "human_note": null},
   {"name": "의사 소개 질문", "message": "원장 선생님은 어떤 분이에요?", "expected_tool": "get_hospital_info", "human_label": null, "human_note": null},
-  {"name": "휴진 여부 질문", "message": "이번 주 토요일 진료 하나요?", "expected_tool": "get_operating_hours", "human_label": null, "human_note": null}
+  {"name": "휴진 여부 질문", "message": "이번 주 토요일 진료 하나요?", "expected_tool": "get_operating_hours", "human_label": null, "human_note": null},
+  {"name": "전화번호 질문", "message": "전화번호가 어떻게 되나요?", "expected_tool": "get_hospital_info", "human_label": null, "human_note": null},
+  {"name": "개원 시간 질문", "message": "몇 시에 문 열어요?", "expected_tool": "get_operating_hours", "human_label": null, "human_note": null},
+  {"name": "특정 요일 예약 질문", "message": "내일 오전에 예약 가능해요?", "expected_tool": "find_open_slots", "human_label": null, "human_note": null},
+  {"name": "위치 표현 변형(교통)", "message": "지하철에서 가까운가요?", "expected_tool": "get_hospital_info", "human_label": null, "human_note": null},
+  {"name": "연중무휴 질문", "message": "연중무휴예요?", "expected_tool": "get_operating_hours", "human_label": null, "human_note": null},
+  {"name": "주말 예약 질문", "message": "이번 주말에 예약할 수 있어요?", "expected_tool": "find_open_slots", "human_label": null, "human_note": null},
+  {"name": "무관 질문(동물 등록)", "message": "강아지 등록은 어떻게 해요?", "expected_tool": null, "human_label": null, "human_note": null},
+  {"name": "무관 질문(사료 추천)", "message": "사료 추천해주세요", "expected_tool": null, "human_label": null, "human_note": null},
+  {"name": "진료 대상 질문", "message": "고양이도 진료 봐요?", "expected_tool": "get_hospital_info", "human_label": null, "human_note": null},
+  {"name": "마감 임박 예약 질문", "message": "오늘 마지막 예약은 몇 시예요?", "expected_tool": "get_operating_hours", "human_label": null, "human_note": null}
 ]
