@@ -11,8 +11,8 @@
     },
     "expected_duration_min": 45,
     "expected_duration_max": 70,
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "기본+초진가산+신경계가산 규칙과 부합"
   },
   {
     "name": "RED — 복합 외상 (재진)",
@@ -26,8 +26,8 @@
     },
     "expected_duration_min": 45,
     "expected_duration_max": 70,
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "재진 가산 없음(-5~10)보다 다발외상 복잡도 가산(+15~20)이 커서 순증가, 초진 케이스와 비슷한 범위로 나오는 게 실제 산정 규칙과 일치함을 코드로 확인"
   },
   {
     "name": "RED — 요도폐색 고양이 (초진)",
@@ -41,8 +41,8 @@
     },
     "expected_duration_min": 45,
     "expected_duration_max": 70,
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "요도폐색은 복잡도 가산 리스트에 명시적으로 포함, 규칙과 부합"
   },
   {
     "name": "RED — GDV 위염전 대형견 (초진)",
@@ -56,8 +56,8 @@
     },
     "expected_duration_min": 50,
     "expected_duration_max": 75,
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "초진가산+GDV 복잡도가산+대형견(30kg 초과) 체중가산이 겹쳐 다른 RED보다 긴 범위(50~75)가 되는 게 산정 규칙과 일치"
   },
   {
     "name": "RED — 열사병 (초진)",
@@ -71,8 +71,8 @@
     },
     "expected_duration_min": 40,
     "expected_duration_max": 70,
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "체중 가산 구간(5~30kg) 밖이라 가산 없음, 범위 하한이 약간 짧은 것도 규칙상 자연스러움"
   },
   {
     "name": "ORANGE — 중등도 호흡곤란 (초진)",
@@ -86,8 +86,8 @@
     },
     "expected_duration_min": 35,
     "expected_duration_max": 60,
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "기본+초진가산+체중가산(5kg미만)+중등도 복잡도 조합이 35~60 범위와 부합"
   },
   {
     "name": "ORANGE — 위확장 의심 (초진)",
@@ -101,8 +101,8 @@
     },
     "expected_duration_min": 40,
     "expected_duration_max": 65,
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "GDV 계열 복잡도가산(+15~20)이 명확히 적용되는 케이스. 다만 기대범위 하한(40)이 최소 계산값(약 55)보다 낮아 판별력이 약함"
   },
   {
     "name": "ORANGE — 혈토 (초진)",
@@ -116,8 +116,8 @@
     },
     "expected_duration_min": 35,
     "expected_duration_max": 60,
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "위장출혈은 최상위 복잡도 리스트에 없어 중등도 가산 수준, Chart의 유사 혈토 케이스(ORANGE)와도 일관됨"
   },
   {
     "name": "ORANGE — 고양이 혈변 (초진)",
@@ -131,8 +131,8 @@
     },
     "expected_duration_min": 35,
     "expected_duration_max": 60,
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "8번과 동일 패턴(중등도 GI 출혈), 범위도 동일해 일관성 있음"
   },
   {
     "name": "YELLOW — 잦은 기침 (재진)",
@@ -146,8 +146,8 @@
     },
     "expected_duration_min": 20,
     "expected_duration_max": 40,
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "켄넬코프는 경증 질환, 재진이라 초진가산 없음, 체중가산 +5 적용 시 계산상 35~40분 근처로 나올 가능성이 높음. 기대범위 20~40분의 하한(20)은 이 조합의 실제 계산 결과보다 낮게 잡혀 있어, 7번과 마찬가지로 범위가 넓어 판별력이 약한 방향으로 남겨둠"
   },
   {
     "name": "YELLOW — 피부 알레르기 고양이 (초진)",
@@ -161,8 +161,8 @@
     },
     "expected_duration_min": 20,
     "expected_duration_max": 45,
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "계산상 40~50 근처, 기대범위(20~45) 상한과 아슬아슬하게 맞음"
   },
   {
     "name": "YELLOW — 혈뇨 고양이 (초진)",
@@ -176,8 +176,8 @@
     },
     "expected_duration_min": 20,
     "expected_duration_max": 50,
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "계산상 40~55, 기대범위(20~50)와 대체로 부합"
   },
   {
     "name": "YELLOW — 경추 디스크 증상 (재진)",
@@ -191,8 +191,8 @@
     },
     "expected_duration_min": 25,
     "expected_duration_max": 45,
-    "human_label": null,
-    "human_note": null
+    "human_label": "FAIL",
+    "human_note": "DURATION_PROMPT의 \"경련·신경계\" 항목에 \"안구 응급\"과 달리 구체적 예시가 없어서, 추간판탈출증 같은 경계 질환(신경증상+정형외과 성격 혼재)이 신경계(+15)로 갈지 저복잡도(+0~5)로 갈지 LLM 재량에 맡겨진 모호한 영역. 케이스 자체보다 프롬프트 설계의 모호함이 원인 — 기대범위는 건드리지 않고 기록만 남김"
   },
   {
     "name": "YELLOW — 반복 구토 고양이 (초진)",
@@ -206,8 +206,8 @@
     },
     "expected_duration_min": 20,
     "expected_duration_max": 45,
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "계산상 40~50, 기대범위(20~45) 상한과 아슬아슬하게 맞음"
   },
   {
     "name": "GREEN — 정기 건강검진 (재진)",
@@ -221,8 +221,8 @@
     },
     "expected_duration_min": 20,
     "expected_duration_max": 40,
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "계산상 30, 기대범위(20~40)에 편하게 들어옴"
   },
   {
     "name": "GREEN — 연간 예방접종 (재진)",
@@ -236,8 +236,8 @@
     },
     "expected_duration_min": 15,
     "expected_duration_max": 35,
-    "human_label": null,
-    "human_note": null
+    "human_label": "FAIL",
+    "human_note": "GREEN 범위 폭 체계적 협소함(메모 B) — 계산값(35)이 상한(35)에 정확히 닿음"
   },
   {
     "name": "GREEN — 중성화 수술 전 검진 (초진)",
@@ -251,8 +251,8 @@
     },
     "expected_duration_min": 20,
     "expected_duration_max": 40,
-    "human_label": null,
-    "human_note": null
+    "human_label": "FAIL",
+    "human_note": "GREEN 등급 범위 폭이 다른 등급 대비 체계적으로 좁음(RED 평균 26.0, ORANGE 25.0, YELLOW 24.0, GREEN 20.8 — 20개 전체 통계). 초진+소형견 조합 계산값(기본30+초진5~10+체중5+복잡도0~5=40~50)이 이 케이스의 상한(40)과 거의 붙거나 넘음 — 케이스 개별 문제가 아니라 GREEN 등급 범위 설정 방식 자체의 구조적 문제로 판단"
   },
   {
     "name": "GREEN — 기침 경과 관찰 (재진)",
@@ -266,8 +266,8 @@
     },
     "expected_duration_min": 15,
     "expected_duration_max": 35,
-    "human_label": null,
-    "human_note": null
+    "human_label": "FAIL",
+    "human_note": "GREEN 등급 범위 폭이 다른 등급 대비 체계적으로 좁음(RED 평균 26.0, ORANGE 25.0, YELLOW 24.0, GREEN 20.8 — 20개 전체 통계). 재진+소형견이라도 계산값(기본30+재진0+체중5+복잡도0~5=35~40)이 이 케이스의 상한(35)과 거의 붙거나 넘음"
   },
   {
     "name": "GREEN — 구강 위생 상담 (초진)",
@@ -281,8 +281,8 @@
     },
     "expected_duration_min": 15,
     "expected_duration_max": 40,
-    "human_label": null,
-    "human_note": null
+    "human_label": "FAIL",
+    "human_note": "GREEN 등급 범위 폭이 다른 등급 대비 체계적으로 좁음(RED 평균 26.0, ORANGE 25.0, YELLOW 24.0, GREEN 20.8 — 20개 전체 통계). 초진+소형견 조합 계산값(기본30+초진5~10+체중5+복잡도0~5=40~50)이 이 케이스의 상한(40)과 거의 붙거나 넘음"
   },
   {
     "name": "GREEN — 고양이 정기 검진 (재진)",
@@ -296,7 +296,7 @@
     },
     "expected_duration_min": 20,
     "expected_duration_max": 40,
-    "human_label": null,
-    "human_note": null
+    "human_label": "FAIL",
+    "human_note": "GREEN 범위 폭 체계적 협소함(메모 B) — 계산값(35~40)이 상한(40)에 맞닿음"
   }
 ]
