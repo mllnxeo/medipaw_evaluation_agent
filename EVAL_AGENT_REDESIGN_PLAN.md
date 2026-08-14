@@ -453,6 +453,18 @@ Dependabot으로 알려진 취약점을 CI에서 자동 스캔한다.
   변수가 정의돼 있지만 어떤 discriminator도 이를 사용하지 않아, 이 gap은
   초콜릿뿐 아니라 TOXIN 섹션 전체(모든 `substance` 값)에 해당함. 응급도
   판정 규칙 재설계는 범위 밖이라 엔진은 고치지 않고 사실만 기록해둠.
+- Chart 평가는 입력으로 주어지는 `triage.urgency_level`의 타당성을 전혀
+  검증하지 않음(Phase 2 라벨링 중 발견, 2026-08-14) — `run_chart_eval()`이
+  `case["triage"]`를 그대로 `ChartAgent.generate()`에 넘기고, `ChartAgent`
+  (`ai/agents/chart/agent.py`)는 이 값을 `f"응급도: {triage.get('urgency_level')}"`
+  식으로 프롬프트에 그대로 꽂아 넣을 뿐 아무 검증도 하지 않음. 위 두 항목과는
+  성격이 다름 — gender·TOXIN 건은 "규칙은 있는데 특정 신호를 반영 못 하는
+  한계"였다면, 이건 **애초에 검증 규칙 자체가 없는 공백**이고, 영향 범위도
+  TOXIN 섹션 하나가 아니라 **Chart 에이전트가 받는 모든 triage 입력** 전체에
+  해당함(운영 환경에서는 실제 Triage 결과가 들어오니 문제가 작겠지만, 골든
+  데이터셋 케이스 자체의 urgency_level이 틀려도 Chart 평가 통과에는 영향이
+  없다는 뜻). 이번 재작업 범위(Chart 에이전트 로직 재설계는 범위 밖)라 코드는
+  고치지 않고 사실만 기록해둠.
 
 ---
 

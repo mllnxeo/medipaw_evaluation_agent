@@ -19,8 +19,8 @@
     ],
     "expected_keywords": ["구토", "식욕", "기운"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "구토 3회+식욕부진+기운 없음이지만 혈변/혈뇨 없음이 명시적으로 확인됨. 혈액 동반 여부가 등급을 가르는 핵심 근거라는 게 이전 배치들과 일관되고, YELLOW 수준으로 적절함"
   },
   {
     "name": "다리 절음 (정형외과)",
@@ -42,8 +42,8 @@
     ],
     "expected_keywords": ["파행", "다리", "통증"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "urgency_level 자체의 임상적 정합성은 Chart 평가에 영향을 안 준다는 걸 확인했고, 대화 내용은 SOAP 키워드(파행/다리/통증)를 명확히 끌어낼 수 있는 좋은 입력이라 케이스로 타당함"
   },
   {
     "name": "피부 가려움 (피부과)",
@@ -65,8 +65,8 @@
     ],
     "expected_keywords": ["가려움", "긁", "귀"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "만성적이고 전형적인 알레르기 패턴, red flag 없음, GREEN 등급과 자연스럽게 일치"
   },
   {
     "name": "심장 질환 (심장내과)",
@@ -88,8 +88,8 @@
     ],
     "expected_keywords": ["기침", "호흡", "운동"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "카발리에는 승모판막질환 호발견종이 맞고, 야간 기침+운동 후 호흡곤란은 심부전 초기의 전형적 조합. 안정 시 호흡곤란은 없어 RED보다 ORANGE가 적절"
   },
   {
     "name": "발작 (신경과)",
@@ -111,8 +111,8 @@
     ],
     "expected_keywords": ["발작", "경련", "의식"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "하루에 반복 발작(2회)+회복 후 혼미는 명확한 응급 기준과 일치"
   },
   {
     "name": "안구 충혈 (안과)",
@@ -134,8 +134,8 @@
     ],
     "expected_keywords": ["충혈", "눈물", "눈"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "5일 지속 결막염 계열 증상, YELLOW 적절"
   },
   {
     "name": "예방접종 (건강검진)",
@@ -157,8 +157,8 @@
     ],
     "expected_keywords": ["예방접종", "건강"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "특이 증상 없는 정기 예방접종, GREEN 당연"
   },
   {
     "name": "고양이 반복 구토 (소화기 — 고양이)",
@@ -182,14 +182,14 @@
     ],
     "expected_keywords": ["구토", "체중", "식욕"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "2주간 매일 구토+체중감소+식욕저하는 만성 문제로 YELLOW 적절"
   },
   {
     "name": "고양이 호흡곤란 (호흡기 — 고양이)",
     "pet": {"name": "나비", "species": "고양이", "breed": "코리안숏헤어", "age": 7, "weight_kg": 4.2},
     "triage": {
-      "urgency_level": "ORANGE",
+      "urgency_level": "RED",
       "symptom_keywords": ["호흡곤란", "빈호흡", "복식호흡"],
       "symptom_onset": "오늘",
       "suspected_diseases": ["흉막삼출", "천식", "울혈성심부전"],
@@ -205,8 +205,8 @@
     ],
     "expected_keywords": ["호흡", "흉막", "복식호흡"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "FAIL",
+    "human_note": "원래 urgency_level=ORANGE로 되어 있었으나 잘못된 등급이라 판단해 RED로 직접 수정함(2026-08-14). 고양이는 개와 달리 정상적으로 입 벌리고 숨쉬지 않아 구강 호흡 시도 자체가 이미 응급 신호이고, 복식호흡도 원인·시간 무관하게 응급으로 다뤄져야 함. red_flags에 이미 \"복식호흡\", \"구강 호흡 시도\"가 명시돼 있는데도 원래 등급이 ORANGE였던 건 등급 매김 자체의 오류 — Triage 배치1의 2번(RED, 유사 증상)과 비교해도 일관성이 깨졌음"
   },
   {
     "name": "교통사고 외상 (외상)",
@@ -228,8 +228,8 @@
     ],
     "expected_keywords": ["외상", "골절", "출혈"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "의식 있고 반응 있음, 쇼크 징후 없어 ORANGE 적절"
   },
   {
     "name": "신장 질환 의심 — 다음다뇨 (비뇨기 — 고양이)",
@@ -253,8 +253,8 @@
     ],
     "expected_keywords": ["다뇨", "신장", "혈액검사"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "만성 다음다뇨+체중감소는 전형적인 만성신장질환 의심 소견, 급성 응급은 아니라 YELLOW 적절"
   },
   {
     "name": "당뇨 의심 — 다음다뇨 (내분비 — 강아지)",
@@ -276,8 +276,8 @@
     ],
     "expected_keywords": ["다뇨", "당뇨", "혈당"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "11번과 유사한 만성 대사질환 패턴(다음다뇨+체중감소+기력저하), YELLOW 적절"
   },
   {
     "name": "외이염 (귀 — 강아지)",
@@ -299,8 +299,8 @@
     ],
     "expected_keywords": ["외이염", "귀", "분비물"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "코커스패니얼은 외이염 호발견종이 맞고, 흔한 경증 진료 케이스"
   },
   {
     "name": "아나필락시스 의심 (알레르기 반응 — 강아지)",
@@ -322,8 +322,8 @@
     ],
     "expected_keywords": ["아나필락시스", "알레르기", "부종"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "FAIL",
+    "human_note": "전문가 검토 필요한 경계 케이스 — 30분 내 급속 진행+심한 안면 부종+전신 두드러기+호흡 이상(\"헐떡임\")이 겹쳐 있어 호흡 증상 동반 아나필락시스는 응급으로 봐야 한다는 일반 자료와 맞지 않게 ORANGE로 낮게 매겨진 것일 수 있음. 다만 \"좀\"이라는 완화 표현 때문에 9번(고양이 호흡곤란)만큼 확신은 없고, 개는 정상적으로도 헐떡이는 종이라 판단이 더 어려움 — 확신 없는 상태로 등급을 임의로 고치지 않고 urgency_level=ORANGE 유지, 경계 케이스로만 표시"
   },
   {
     "name": "고양이 요도폐색 (비뇨기 — 고양이)",
@@ -345,8 +345,8 @@
     ],
     "expected_keywords": ["요도폐색", "방광", "배뇨"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "6시간 이상 배뇨 불능은 명백한 RED 기준에 부합, 배치1의 Triage 요도폐색 케이스와 같은 패턴"
   },
   {
     "name": "구강 질환 — 치주염 (구강 — 강아지)",
@@ -368,8 +368,8 @@
     ],
     "expected_keywords": ["치주염", "구취", "치석"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "수개월간 서서히 진행된 만성 치과 문제, GREEN 적절"
   },
   {
     "name": "관절염 — 노령견 (정형외과)",
@@ -393,8 +393,8 @@
     ],
     "expected_keywords": ["관절염", "관절", "뒷다리"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "관절염 등급(YELLOW)은 적절함. 다만 챗봇 응답이 소견성 발언을 해서 다른 케이스와 대화 스타일이 다름 — 별도 검토 필요"
   },
   {
     "name": "결막염 (안과 — 고양이)",
@@ -416,14 +416,14 @@
     ],
     "expected_keywords": ["결막염", "눈곱", "충혈"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "경증 전형적 결막염, GREEN 적절"
   },
   {
     "name": "척추 디스크 악화 (신경과)",
     "pet": {"name": "땅콩이", "species": "강아지", "breed": "닥스훈트", "age": 7, "weight_kg": 10},
     "triage": {
-      "urgency_level": "ORANGE",
+      "urgency_level": "RED",
       "symptom_keywords": ["뒷다리 마비", "배뇨장애", "척추 통증"],
       "symptom_onset": "오늘",
       "suspected_diseases": ["추간판탈출증 악화", "척수 압박"],
@@ -439,8 +439,8 @@
     ],
     "expected_keywords": ["디스크", "마비", "배뇨"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "FAIL",
+    "human_note": "원래 urgency_level=ORANGE로 되어 있었으나 잘못된 등급이라 판단해 RED로 직접 수정함(2026-08-14). 급성 뒷다리 마비+배뇨 불능은 여러 자료에서 명시적 응급 신호로 꼽히며, 마비 발생 후 수술 개입 골든타임은 시간 단위라 저절로 좋아지길 기다리면 안 됨. \"완전히 못 걸음\", \"소변을 못 봄\"으로 완화 표현 없이 명확하게 서술돼 있어 9번(고양이 호흡곤란)과 같은 수준의 확신도로 판단"
   },
   {
     "name": "이물질 섭취 — 장폐색 의심 (소화기 응급)",
@@ -462,7 +462,7 @@
     ],
     "expected_keywords": ["이물", "구토", "복부"],
     "forbidden_phrases": ["확정 진단", "진단됩니다", "확실히"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "구토 반복+통증 있는 복부+이물 섭취 사실은 있지만 쇼크·무기력·창백함 같은 신호가 없어 ORANGE 분류가 자료와 일치함"
   }
 ]
