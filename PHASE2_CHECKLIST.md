@@ -39,13 +39,22 @@ Orchestrator 23 / Reception 10 — "에이전트별 최소 20개" 기준으로 �
 | **Chart** | 20 | **20 / 20** (배치 1~4 완료, 2026-08-14) | 완료 |
 | **Schedule** | 20 | **20 / 20** (배치 1~4 완료, 2026-08-14) | 완료 |
 | **Reception** | 20 | **20 / 20** (배치 1~4 완료, 2026-08-14) | 완료 |
-| Followup | 20 | 0 / 100 (표본만 필요) | 미착수 — 표본 추출 기준 논의 필요, **다음 시작 지점** |
+| **Followup** | 20 | **20 / 100**(표본 추출, 배치 1~4 완료, 2026-08-16) | 완료 |
 | **Orchestrator** | 20 | **23 / 23** (배치 1~4 완료, 2026-08-16) | 완료(목표 20 초과 달성, 전체 라벨링) |
 
-**다음 세션 시작 지점**: Followup(표본 추출 방식 논의 —
-`followup_eval_cases.json`에 `expected_category` 필드가 있는지부터
-확인하고 시작) — 이것만 끝나면 Phase 2의 마지막
-에이전트.
+## Phase 2 완료 (2026-08-16)
+
+6개 에이전트 전부 라벨링 완료 — Triage 20/40, Chart 20/20, Schedule
+20/20, Reception 20/20, Followup 20/100(표본), Orchestrator 23/23.
+총 **123개 케이스**에 사람 라벨링 완료. 데이터/케이스 오류 **9건**을
+발견해 직접 수정(Chart 2건, Reception 1건 도구 매칭 + 1건 이름표,
+Orchestrator 3건 후보군 혼동 + 1건 이름표, Followup은 케이스 수정 없이
+시스템 쪽 문제로 판명). 시스템(평가 대상 에이전트 + 평가 로직 자체)
+한계 발견 **8건**을 `EVAL_AGENT_REDESIGN_PLAN.md` 9번 섹션 Known
+Issues에 기록(gender 미반영, TOXIN 중증도 미반영, Chart urgency
+무검증, DURATION_PROMPT 예시 부재, GREEN 범위 협소, Reception null
+계열, case_eval.py rule 체크 테스트 계획 부재, **Followup severity
+검증 공백[우선순위: 높음]**).
 
 ### Triage 라벨링 상세 (case 1~20 / 40)
 
@@ -188,6 +197,9 @@ Chart는 Triage와 달리 무료 결정론적 엔진이 없음 — `_check_soap_
 - [x] Reception 20/20 라벨링 완료, 커밋 완료 — `0ce79e7`
       "feat(evaluation): Reception 라벨링 20개 완료, 도구 매칭 오류
       1건 수정"
+- [x] Orchestrator 23/23 라벨링 완료, 커밋 완료 — `6bc8c25`
+      "feat(evaluation): Orchestrator 라벨링 23개 완료, 케이스 오류
+      3건 수정"
 
 ### Schedule 라벨링 상세 (case 1~10 / 20, 진행 중)
 
@@ -351,3 +363,93 @@ LLM 호출이라 입력+기대값만으로 검토.
 전인 것 같다"고 지적해 발견, 실제 파일 인덱스로 재확인 후 정정.
 라벨 자체는 메시지 텍스트로 정확히 매칭해 반영했기 때문에 데이터 오염은
 없었음.
+
+### Followup 표본 추출 기준 (2026-08-16)
+
+100개 중 20개를 라벨링 대상으로 추출. 먼저 `followup_eval_cases.json`의
+분류 필드를 확인:
+- `expected_category`(8종): symptom_change 20 / pet_general 15 /
+  appetite_energy 12 / medication_response 11 / pain_behavior 11 /
+  hospital_info 11 / stool_urine 10 / irrelevant 10
+- `expected_severity`(3종): stable 51 / worse 41 / **urgent_possible 8**
+- `urgent_possible` 8개는 `symptom_change`(4)·`stool_urine`(4) 단 2개
+  카테고리에만 몰려 있고, 나머지 6개 카테고리엔 전무.
+
+**결정: 무작위/카테고리 균등 대신 severity 우선 추출.** 근거(사용자
+판단) — `EVAL_AGENT_REDESIGN_PLAN.md` 4번 섹션 "hard gate(응급도 등)는
+recall 100%를 목표로 먼저 고정한다" 원칙과 일치시키기 위해, 희소하지만
+안전상 중요한 `urgent_possible`이 표본에서 누락되지 않는 걸 카테고리
+균등 배분보다 우선했다. 카테고리 균등 추출(8개×2~3개)을 했다면
+`urgent_possible` 8개 중 상당수가 표본 밖으로 빠질 위험이 있었음.
+
+**추출 방법**: (1) `urgent_possible` 8개 전부 포함. (2)
+`urgent_possible`이 없는 6개 카테고리(`appetite_energy`,
+`hospital_info`, `irrelevant`, `medication_response`, `pain_behavior`,
+`pet_general`)에서 각 2개씩 12개 — 해당 카테고리에 `stable`/`worse`가
+둘 다 있으면 1개씩(다양성 확보), 한 severity뿐이면 그중 2개.
+`hospital_info`·`irrelevant`·`pet_general`은 전부 stable뿐이라
+다양성을 줄 수 없었음. 총 20개.
+
+**최종 표본 20개**:
+
+| # | 이름 | 카테고리 | severity |
+|---|---|---|---|
+| 1 | followup_003 | symptom_change | urgent_possible |
+| 2 | followup_004 | symptom_change | urgent_possible |
+| 3 | followup_006 | symptom_change | urgent_possible |
+| 4 | followup_007 | symptom_change | urgent_possible |
+| 5 | followup_031 | stool_urine | urgent_possible |
+| 6 | followup_033 | stool_urine | urgent_possible |
+| 7 | followup_034 | stool_urine | urgent_possible |
+| 8 | followup_035 | stool_urine | urgent_possible |
+| 9 | followup_029 | appetite_energy | stable |
+| 10 | followup_021 | appetite_energy | worse |
+| 11 | followup_051 | hospital_info | stable |
+| 12 | followup_053 | hospital_info | stable |
+| 13 | followup_071 | irrelevant | stable |
+| 14 | followup_072 | irrelevant | stable |
+| 15 | followup_013 | medication_response | stable |
+| 16 | followup_011 | medication_response | worse |
+| 17 | followup_050 | pain_behavior | stable |
+| 18 | followup_041 | pain_behavior | worse |
+| 19 | followup_061 | pet_general | stable |
+| 20 | followup_062 | pet_general | stable |
+
+**사용자 검토 후 조정(2026-08-16)**: `hospital_info` 카테고리 11개 전체를
+확인해보니 주차·운영시간 외에도 진료비·예약변경·처방전 재발급·다음
+진료일·검사결과 확인·대기시간 등 다양한 유형이 있어, 12번을
+`followup_052`(운영시간 — 11번 주차와 성격이 겹침)에서
+`followup_053`(진료비 — 다른 유형)로 교체해 다양성을 확보함.
+
+**severity 개념이 없는 카테고리**: `hospital_info`·`irrelevant`·
+`pet_general` 3개 카테고리는 100개 전체에서 `worse`/`urgent_possible`
+케이스가 원천적으로 0개(전부 stable). 병원 행정 문의·무관 잡담·일반
+케어 질문은 성격상 "증상 악화" 개념이 적용되지 않는 카테고리로 보임 —
+표본에 다양성이 없는 게 추출 방법의 한계가 아니라 카테고리 자체의
+특성임을 기록해둠.
+
+**남은 80개**: 라벨링하지 않음(Phase 9에서 데이터셋 전체 확장 시
+재검토 여지).
+
+### Followup 라벨링 완료 (표본 20/20, 2026-08-16)
+
+`keyword_fallback()`은 Check 1·2가 실제로 쓰는 무료 결정론 함수라
+Triage처럼 직접 실행해 시스템 계산 결과를 보여주며 진행. 표본 20개
+전부 human_label=PASS(케이스 자체는 전부 타당) — 다만 이 중 4개
+(followup_029, 013, 050, 062)에서 `keyword_fallback()`의 실제
+오작동을 발견해 md 9번 섹션에 3가지 패턴(①긍정/부정 오판 ②매칭 누락
+③무관 문의 과잉반응)으로 통합 기록. 케이스 자체를 고칠 문제가 아니라
+시스템(채점 로직) 쪽 문제라 `expected_*` 값은 건드리지 않음.
+
+| # | 이름 | 시스템 계산 vs 기대값 | 라벨 | 비고 |
+|---|---|---|---|---|
+| 1~8 | urgent_possible 8개 전부 | 전부 일치 | PASS | |
+| 9 | followup_029 "밥을 다 먹었어요" | **불일치**(WORSE로 오판) | PASS | 패턴①, md 기록 |
+| 10 | followup_021 | 일치 | PASS | |
+| 11~14 | hospital_info×2, irrelevant×2 | 전부 일치 | PASS | |
+| 15 | followup_013 "약 잘 먹고 있어요" | **불일치**(is_followup 누락) | PASS | 패턴②, md 기록 |
+| 16 | followup_011 | 일치 | PASS | |
+| 17 | followup_050 "활발해진 것 같아요" | **불일치**(is_followup 누락) | PASS | 패턴②, md 기록 |
+| 18 | followup_041 | 일치 | PASS | |
+| 19 | followup_061 | 일치 | PASS | |
+| 20 | followup_062 "이 사료 괜찮은 건가요?" | **불일치**(과잉반응) | PASS | 패턴③, md 기록 |

@@ -508,6 +508,49 @@ Dependabot으로 알려진 취약점을 CI에서 자동 스캔한다.
   자체가 틀린 게 아니라 3건 모두 human_label은 PASS로 유지 — 도구를
   새로 바꾸는 문제가 아니라 향후 Reception 라우팅 로직 개선 시 고려할
   아이디어 성격이라 별도 조치 없이 기록만 해둠.
+- **[우선순위: 높음]** `run_followup_filter_eval()`의 Check 1~3 어디에도
+  `stable`/`worse` severity 정확도를 검증하는 로직이 없음(Phase 2
+  라벨링 중 발견, 2026-08-16) — Check 1(분류 Recall/Precision)과
+  Check 3(LLM 실호출)은 `is_followup` 여부만 비교하고, Check 2(악화
+  신호 감지)는 `expected_severity == "urgent_possible"`인 케이스만
+  따로 걸러 그것만 확인한다. 즉 전체 100개 케이스 중 `stable`(51개)·
+  `worse`(41개), **92%에 해당하는 케이스들의 severity 정확도는 채점
+  파이프라인이 원천적으로 확인하지 못한다.**
+
+  이 검증 공백 때문에 지금까지 발견되지 않았을 `keyword_fallback()`의
+  실제 오작동 사례를 라벨링 중 4건 발견해, 3가지 패턴으로 정리한다
+  (`followup_eval_cases.json`의 human_label=PASS로 표시된 케이스들 —
+  케이스 자체는 타당하고 시스템 쪽 문제라 라벨은 그대로 둠):
+
+  1. **긍정/부정 오판** — 증상 키워드가 걸리면 문맥의 긍정·부정을
+     구분하지 않고 무조건 `WORSE`/`URGENT_POSSIBLE`로 처리(코드 안에
+     `STABLE`을 반환하는 경로 자체가 없음). 예: followup_029 "오늘은
+     밥을 다 먹었어요"(stable, 호전) → `WORSE`로 오판.
+  2. **매칭 누락** — 키워드 사이에 조사·부사가 끼면 매치 실패, 또는
+     호전을 나타내는 어휘가 `SYMPTOM_KEYWORDS`에 아예 없어 경과
+     보고 자체가 무관 처리됨. 예: followup_013 "약 **잘** 먹고
+     있어요"(`"약 먹"` 키워드가 "잘"에 막혀 매치 실패) →
+     `is_followup=False`로 누락. followup_050 "오늘은 많이
+     활발해진 것 같아요"(호전 표현이 목록에 아예 없음) →
+     `is_followup=False`로 누락.
+  3. **무관 문의 과잉반응** — 증상과 무관한 일반 문의에 증상
+     키워드가 우연히 포함돼 있으면 오탐. 예: followup_062 "이
+     **사료** 괜찮은 건가요?"(제품 문의, `"사료"`가 식욕 키워드로
+     단독 등재) → `is_followup=True, severity=WORSE`로 오탐.
+
+  세 패턴 모두 근본 원인은 같다 — **채점 파이프라인이 severity·
+  is_followup 정확도를 애초에 검증하지 않아, `keyword_fallback()`의
+  이런 오작동이 지금까지 드러날 기회가 없었다.**
+
+  이 항목은 위의 다른 Known Issues(gender 미참고, TOXIN 중증도 미반영,
+  Chart urgency 무검증, DURATION_PROMPT 예시 부재, GREEN 범위 협소,
+  Reception null 처리)와 **성격이 다르다** — 저것들은 전부 "평가
+  **대상** 에이전트"(Triage/Chart/Schedule/Reception)의 한계라 이번
+  재작업 범위 밖이지만, 이건 "평가 **에이전트 자체**(채점 로직)"의
+  공백이라 정확히 이번 프로젝트가 다뤄야 하는 범위다. 다만 지금(Phase 2)은
+  아직 골든 데이터셋을 만들고 라벨링하는 단계라, 실제 채점 로직 수정은
+  **Phase 5**(공통 `CheckResult` 스키마로 통일하면서 각 에이전트 체크
+  항목을 재설계하는 단계)에서 진행하기로 한다.
 
 ---
 
