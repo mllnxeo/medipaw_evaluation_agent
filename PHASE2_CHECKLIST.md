@@ -200,6 +200,9 @@ Chart는 Triage와 달리 무료 결정론적 엔진이 없음 — `_check_soap_
 - [x] Orchestrator 23/23 라벨링 완료, 커밋 완료 — `6bc8c25`
       "feat(evaluation): Orchestrator 라벨링 23개 완료, 케이스 오류
       3건 수정"
+- [x] Followup 20/100(표본) 라벨링 완료, 커밋 완료 — `72fc4b1`
+      "feat(evaluation): Followup 라벨링 완료, 골든 데이터셋 123개
+      확보" — **Phase 2 전체 완료**
 
 ### Schedule 라벨링 상세 (case 1~10 / 20, 진행 중)
 
