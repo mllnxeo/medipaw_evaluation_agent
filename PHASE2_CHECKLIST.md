@@ -39,13 +39,12 @@ Orchestrator 23 / Reception 10 — "에이전트별 최소 20개" 기준으로 �
 | **Chart** | 20 | **20 / 20** (배치 1~4 완료, 2026-08-14) | 완료 |
 | **Schedule** | 20 | **20 / 20** (배치 1~4 완료, 2026-08-14) | 완료 |
 | **Reception** | 20 | **20 / 20** (배치 1~4 완료, 2026-08-14) | 완료 |
-| Followup | 20 | 0 / 100 (표본만 필요) | 미착수 — 표본 추출 기준 논의 필요 |
-| Orchestrator | 20 | 0 / 23 | 미착수 — **다음 시작 지점** |
+| Followup | 20 | 0 / 100 (표본만 필요) | 미착수 — 표본 추출 기준 논의 필요, **다음 시작 지점** |
+| **Orchestrator** | 20 | **23 / 23** (배치 1~4 완료, 2026-08-16) | 완료(목표 20 초과 달성, 전체 라벨링) |
 
-**다음 세션 시작 지점**: Orchestrator 라벨링(목표 20/23) 배치 1(케이스
-1~5)부터 시작. 마지막으로 Followup(표본 추출 방식 논의 —
+**다음 세션 시작 지점**: Followup(표본 추출 방식 논의 —
 `followup_eval_cases.json`에 `expected_category` 필드가 있는지부터
-확인하고 시작) 남음 — Orchestrator까지 끝나면 Phase 2의 마지막
+확인하고 시작) — 이것만 끝나면 Phase 2의 마지막
 에이전트.
 
 ### Triage 라벨링 상세 (case 1~20 / 40)
@@ -186,6 +185,9 @@ Chart는 Triage와 달리 무료 결정론적 엔진이 없음 — `_check_soap_
 - [x] Schedule 20/20 라벨링 완료, 커밋 완료 — `b54918a`
       "feat(evaluation): Schedule 라벨링 20개 완료, GREEN 등급 범위
       설계 문제 발견"
+- [x] Reception 20/20 라벨링 완료, 커밋 완료 — `0ce79e7`
+      "feat(evaluation): Reception 라벨링 20개 완료, 도구 매칭 오류
+      1건 수정"
 
 ### Schedule 라벨링 상세 (case 1~10 / 20, 진행 중)
 
@@ -293,3 +295,59 @@ GREEN 20.8). Phase 6에서 메모 A와 함께 재검토 — 특히 GREEN 등급
 안에서도 서로 다른 하위 질문으로 설계돼 재진술 짝이 아님. 지금 늘리지
 않고, 필요시 **Phase 9(100개 확장)** 때 재진술 짝을 추가할지 검토하기로
 함.
+
+### Orchestrator 라벨링 완료 (23/23, 2026-08-16)
+
+목표(20개)를 초과해 **23개 전부** 라벨링. `route()`는 pill/`active_flow`
+상태(SCHEDULING·AWAITING_BOOKING_CONFIRM 등)에 대해 LLM 호출 없는
+결정론 분기가 있어, 해당 케이스(8~11번)는 코드 확인만으로 100% 확실하게
+검증함 — 나머지는 Chart/Schedule/Reception과 동일하게 `_llm_pick()`이
+LLM 호출이라 입력+기대값만으로 검토.
+
+| # | 케이스명 | 라벨 | 근거 요약 |
+|---|---|---|---|
+| 1 | BOOKED — 증상 경과 보고 | PASS | 아이 상태 관련 대화 규칙과 일치 |
+| **2** | **BOOKED — 병원 운영시간 질문** | **FAIL** | **allowed를 [reception,followup_filter]→[reception]으로 수정 — 아래 "구조 오류" 참고** |
+| 3 | BOOKED — 주차 안내 질문 | PASS | 순수 병원 정보, reception |
+| 4 | BOOKED — 예약 시간 변경 요청 | PASS | 예약 변경 규칙과 일치 |
+| 5 | BOOKED — 증상 악화 보고 | PASS | followup_filter 내부 자체 응급 감지 로직 확인, gap 아님 |
+| 6 | BOOKED — 수의사 소개 질문 | PASS | 순수 병원 정보, reception |
+| **7** | **BOOKED — 잡담 (무관 주제)** | **FAIL** | **allowed를 [redirect,reception]→[reception]으로 수정 — BOOKED phase는 구조적으로 redirect 불가** |
+| 8 | SCHEDULING — 슬롯 선택 고정 | PASS | 결정론 분기, 100% 확실 |
+| 9 | SCHEDULING — 다른 날짜 요청 | PASS | 결정론 분기, 100% 확실 |
+| 10 | 예약확인 게이트 — 네 | PASS | 결정론 분기, 100% 확실 |
+| 11 | 예약확인 게이트 — 아니요 | PASS | 결정론 분기, 100% 확실 |
+| 12~17 | PRE — 발작/호흡이상/독성섭취/구토/위치/전화번호 | PASS | 증상은 triage, 병원정보는 reception 규칙과 일치 |
+| 18 | PRE — 예약 바로 원함 (문진 없이) | PASS | "예약은 문진 필수" 규칙과 일치 |
+| 19 | PRE — 잡담 | PASS | allowed 2값[reception,redirect] 유지 — 애매한 영역으로 기록만(아래 참고) |
+| **20** | **일반 케어 질문(사료)**(원래 "PRE — 무관 질문") | **FAIL** | **name+allowed 모두 수정 — 아래 참고** |
+| 21~22 | TRIAGING — 문진 중 증상 답변/추가 증상 | PASS | 문진 계속 규칙과 일치 |
+| 23 | TRIAGING — 문진 중 화제 전환 (병원 위치) | PASS | 문진 중 이탈 처리 검증하는 좋은 케이스 |
+
+**"구조적 후보군 vs 실제 정답" 혼동 오류 — 2·7·20번, 총 3건**: 사용자가
+2번에서 처음 패턴을 지적한 뒤, 나머지 22개를 전수 스캔해 6번(재검토 결과
+정상), 19번(애매하나 보류), 20번(추가 확정)까지 확인. `_candidates()`가
+반환하는 phase별 구조적 후보군 전체(또는 다른 phase의 후보군)를 그대로
+`allowed`에 넣어놓고, 실제로는 phase_hint가 특정 답 하나로 좁혀야 하는
+케이스들이었음:
+- **2번**: BOOKED phase_hint "순수 병원 정보만 reception"인데
+  `[reception, followup_filter]`(BOOKED 구조적 후보군 그대로) — `allowed`를
+  `[reception]`으로 수정.
+- **7번**: BOOKED phase는 `_candidates()`가 절대 `redirect`를 반환 안 함
+  (`router.py:152` 주석 "triage·redirect 불가")인데 `[redirect, reception]`
+  — `allowed`를 `[reception]`으로 수정. 채점에 실질적 해는 없었음(애초에
+  안 나올 값이라).
+- **20번**: PRE_BOOKING phase_hint "사료 추천 같은 일반 케어 질문은
+  reception"인데 `[redirect, reception]` — `allowed`를 `[reception]`으로
+  수정. 케이스 이름도 "무관 질문"에서 실제 성격에 맞게 "일반 케어
+  질문(사료)"로 수정(이름표 오류까지 이중 오류).
+- **19번(보류)**: `[reception, redirect]` 2값 유지지만, 순수 잡담엔
+  phase_hint가 구체적으로 규정한 바가 없어 "명백한 오류"로 단정하지
+  않고 애매함만 기록. Phase 3(judge 일치율) 또는 Phase 6에서 실측
+  기반으로 재검토 여지 있음.
+
+**세션 중 발견한 진행 실수**: 배치 1→2 전환 시 번호를 잘못 세어 6번
+케이스(수의사 소개 질문)를 건너뛸 뻔함 — 사용자가 "7~11번이 아직 판단
+전인 것 같다"고 지적해 발견, 실제 파일 인덱스로 재확인 후 정정.
+라벨 자체는 메시지 텍스트로 정확히 매칭해 반영했기 때문에 데이터 오염은
+없었음.

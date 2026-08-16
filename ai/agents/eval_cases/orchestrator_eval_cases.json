@@ -5,17 +5,17 @@
     "flow": "IDLE",
     "message": "오늘 구토 3번 했어요",
     "allowed": ["followup_filter"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "아이 상태 관련 대화라, 규칙(\"아이 상태 관련 대화·질문은 모두 followup_filter\")에 명확히 해당함"
   },
   {
     "name": "BOOKED — 병원 운영시간 질문",
     "phase": "BOOKED",
     "flow": "IDLE",
     "message": "병원 몇 시까지 해요?",
-    "allowed": ["reception", "followup_filter"],
-    "human_label": null,
-    "human_note": null
+    "allowed": ["reception"],
+    "human_label": "FAIL",
+    "human_note": "원래 allowed=[\"reception\", \"followup_filter\"]였으나 잘못된 케이스 작성이라 판단해 [\"reception\"]으로 직접 수정함(2026-08-16). phase_hint는 \"병원 위치·운영시간·전화 같은 순수 병원 정보만 reception\"이라고 명시하는데, 이 값은 router.py _candidates()가 반환하는 BOOKED phase의 구조적 후보군 전체를 그대로 넣어놓은 것으로 보임 — 같은 배치의 다른 4개 케이스는 전부 메시지 내용에 맞춰 정답을 1개로 좁혀놨는데 이 케이스만 그렇지 않았음. 현재 채점(if got in allowed)이 단순 멤버십 체크라, 수정 전에는 LLM이 틀린 라우팅(followup_filter)을 골라도 PASS로 채점되는 허점이 있었음"
   },
   {
     "name": "BOOKED — 주차 안내 질문",
@@ -23,8 +23,8 @@
     "flow": "IDLE",
     "message": "병원 주차 가능한가요?",
     "allowed": ["reception"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "순수 병원 정보 질문이라, 규칙상 reception 하나로 명확히 좁혀지는 게 맞음"
   },
   {
     "name": "BOOKED — 예약 시간 변경 요청",
@@ -32,8 +32,8 @@
     "flow": "IDLE",
     "message": "예약 시간을 더 빠른 걸로 바꿀 수 있을까요?",
     "allowed": ["followup_filter"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "예약 변경 요청이라, 규칙(\"예약 변경·재예약은 모두 followup_filter\")에 명확히 해당함"
   },
   {
     "name": "BOOKED — 증상 악화 보고",
@@ -41,8 +41,8 @@
     "flow": "IDLE",
     "message": "아까보다 더 심해진 것 같아요 숨을 너무 힘들게 쉬어요",
     "allowed": ["followup_filter"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "처음엔 라우팅 단계에서 응급 판단 없이 followup_filter로만 가는 게 gap 아닌지 의심했으나, followup_filter 내부에 자체 응급 신호 감지 로직(severity_hint=urgent_possible, URGENT_KEYWORDS 매칭, LLM이 안내를 빠뜨려도 코드가 강제로 안전 문구를 삽입하는 안전장치)이 이미 있음을 코드로 확인함. 라우팅 단계와 followup_filter 내부 처리 단계로 나뉜 2단계 구조라 gap이 아니었음"
   },
   {
     "name": "BOOKED — 수의사 소개 질문",
@@ -50,17 +50,17 @@
     "flow": "IDLE",
     "message": "원장 선생님은 어떤 분이에요?",
     "allowed": ["reception"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "원장 소개 질문, 허용 라우팅이 reception 하나로 명확히 좁혀져 있고 Reception 파일 9번과 같은 유형"
   },
   {
     "name": "BOOKED — 잡담 (무관 주제)",
     "phase": "BOOKED",
     "flow": "IDLE",
     "message": "오늘 날씨가 너무 좋네요",
-    "allowed": ["redirect", "reception"],
-    "human_label": null,
-    "human_note": null
+    "allowed": ["reception"],
+    "human_label": "FAIL",
+    "human_note": "원래 allowed=[\"redirect\", \"reception\"]였으나 잘못된 케이스 작성이라 판단해 [\"reception\"]으로 직접 수정함(2026-08-16). router.py:152 주석에 \"BOOKED phase는 triage·redirect 불가\"라고 명시돼 있어 _candidates()가 BOOKED 상태에서 절대 \"redirect\"를 반환할 수 없음 — 2번과 같은 패턴(다른 phase의 후보군 일부를 잘못 가져온 것으로 추정). 이번엔 채점에 실질적 해는 없었지만(애초에 안 나올 값) 케이스 작성 정확도 문제는 동일해서 일관되게 FAIL 처리"
   },
   {
     "name": "SCHEDULING — 슬롯 선택 고정",
@@ -68,8 +68,8 @@
     "flow": "SCHEDULING",
     "message": "다음주 월요일로요",
     "allowed": ["schedule"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "active_flow == SCHEDULING이면 LLM 호출 없이 무조건 schedule을 반환하는 결정론 분기, 100% 확실"
   },
   {
     "name": "SCHEDULING — 다른 날짜 요청",
@@ -77,8 +77,8 @@
     "flow": "SCHEDULING",
     "message": "화요일 오후로 바꿔주세요",
     "allowed": ["schedule"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "7번과 동일한 결정론 분기, 100% 확실"
   },
   {
     "name": "예약확인 게이트 — 네",
@@ -86,8 +86,8 @@
     "flow": "AWAITING_BOOKING_CONFIRM",
     "message": "네",
     "allowed": ["triage"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "active_flow == AWAITING_BOOKING_CONFIRM이면 무조건 triage를 반환하는 결정론 분기, 100% 확실"
   },
   {
     "name": "예약확인 게이트 — 아니요",
@@ -95,8 +95,8 @@
     "flow": "AWAITING_BOOKING_CONFIRM",
     "message": "아니요",
     "allowed": ["triage"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "9번과 동일한 결정론 분기, 100% 확실"
   },
   {
     "name": "PRE — 발작 증상",
@@ -104,8 +104,8 @@
     "flow": "IDLE",
     "message": "발작 중이에요",
     "allowed": ["triage"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "발작 증상, triage로 명확히 대응"
   },
   {
     "name": "PRE — 호흡 이상",
@@ -113,8 +113,8 @@
     "flow": "IDLE",
     "message": "호흡이 이상해요",
     "allowed": ["triage"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "호흡 이상 증상, triage로 명확히 대응"
   },
   {
     "name": "PRE — 독성 물질 섭취",
@@ -122,8 +122,8 @@
     "flow": "IDLE",
     "message": "강아지가 포도를 먹었어요",
     "allowed": ["triage"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "독성물질 섭취도 증상 문진 대상, triage로 명확히 대응"
   },
   {
     "name": "PRE — 구토 증상",
@@ -131,8 +131,8 @@
     "flow": "IDLE",
     "message": "어제부터 계속 토해요",
     "allowed": ["triage"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "구토 증상, triage로 명확히 대응"
   },
   {
     "name": "PRE — 병원 위치 질문",
@@ -140,8 +140,8 @@
     "flow": "IDLE",
     "message": "병원 어디 있어요?",
     "allowed": ["reception"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "순수 병원 정보(위치), reception으로 명확히 대응"
   },
   {
     "name": "PRE — 전화번호 질문",
@@ -149,8 +149,8 @@
     "flow": "IDLE",
     "message": "병원 전화번호 알려주세요",
     "allowed": ["reception"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "순수 병원 정보(전화번호), reception으로 명확히 대응"
   },
   {
     "name": "PRE — 예약 바로 원함 (문진 없이)",
@@ -158,8 +158,8 @@
     "flow": "IDLE",
     "message": "바로 예약하고 싶어요",
     "allowed": ["triage"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "\"예약은 문진을 거쳐야 한다\"는 규칙(phase_hint: 증상 설명 없이 '바로 예약'만 원해도 triage가 받아 안내)과 정확히 일치하는 설계 의도 케이스"
   },
   {
     "name": "PRE — 잡담",
@@ -167,17 +167,17 @@
     "flow": "IDLE",
     "message": "오늘 날씨 좋네요",
     "allowed": ["reception", "redirect"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "순수 잡담은 phase_hint가 구체적으로 규정한 바가 없어서, reception과 redirect 둘 다 설계상 허용됐을 수 있음. 2·7번과 달리 \"명백한 실수\"로 단정하기 어려운 애매한 영역 — 확정하지 않고 애매함만 기록"
   },
   {
-    "name": "PRE — 무관 질문",
+    "name": "일반 케어 질문(사료)",
     "phase": "PRE_BOOKING",
     "flow": "IDLE",
     "message": "강아지 밥은 하루에 몇 번 줘야 해요?",
-    "allowed": ["redirect", "reception"],
-    "human_label": null,
-    "human_note": null
+    "allowed": ["reception"],
+    "human_label": "FAIL",
+    "human_note": "원래 name=\"PRE — 무관 질문\", allowed=[\"redirect\", \"reception\"]였으나 잘못된 케이스 작성이라 판단해 name과 allowed를 직접 수정함(2026-08-16). phase_hint가 \"사료 추천 같은 일반 케어 질문은 reception\"이라고 구체적으로 명시하는데 redirect도 허용돼 있어 2·7번과 같은 패턴. 추가로 케이스 이름표가 \"무관 질문\"인데 phase_hint상 명백히 유관한 질문이라 이름표 오류까지 겹친 이중 오류였음"
   },
   {
     "name": "TRIAGING — 문진 중 증상 답변",
@@ -185,8 +185,8 @@
     "flow": "TRIAGING",
     "message": "어제부터요",
     "allowed": ["triage"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "직전 질문에 대한 자연스러운 답변, triage로 이어지는 게 규칙과 일치"
   },
   {
     "name": "TRIAGING — 문진 중 추가 증상",
@@ -194,8 +194,8 @@
     "flow": "TRIAGING",
     "message": "밥도 잘 안 먹어요",
     "allowed": ["triage"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "문진 중 추가 증상 언급, triage 계속되는 게 규칙과 일치"
   },
   {
     "name": "TRIAGING — 문진 중 화제 전환 (병원 위치)",
@@ -203,7 +203,7 @@
     "flow": "TRIAGING",
     "message": "그런데 병원이 어디 있어요?",
     "allowed": ["reception"],
-    "human_label": null,
-    "human_note": null
+    "human_label": "PASS",
+    "human_note": "\"분명히 병원 정보로 화제를 바꿀 때만 reception\" 규칙에 정확히 해당하는 설계 의도 케이스, 문진 중 이탈 처리를 검증하는 좋은 케이스"
   }
 ]
