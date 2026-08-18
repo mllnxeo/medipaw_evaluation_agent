@@ -484,6 +484,19 @@ Dependabot으로 알려진 취약점을 CI에서 자동 스캔한다.
   순전히 대화 내 질문 누락에 대한 것이었음(`triage_judge_calibration_rag.json`
   참고). Chart·Triage 둘 다 "LLM Judge 타입 체크는 urgency 값 자체를
   검증하지 않는다"는 동일한 설계 공백을 공유한다는 것을 실측으로 확인.
+- **Triage `_check_1e`의 4개 채점 기준이 서로 독립적이지 않을 수
+  있음**(Phase 3, 2026-08-18) — 조작 케이스 2개로 판별력을 테스트하는
+  과정에서, Chart의 4개 기준은 겨냥한 기준만 정밀하게 떨어뜨릴 수
+  있었던 반면(조작 A/B/C 참고), Triage `_check_1e`는 하나를 겨냥해
+  망가뜨려도 다른 기준까지 같이 떨어지는 교차 오염이 관찰됨 — 후속
+  질문을 아예 안 한 조작(completeness 겨냥)에서 structuring_quality도
+  크게 하락(2.0), 이미 답한 걸 다시 물은 조작(question_efficiency
+  겨냥)에서 response_consistency도 크게 하락(2.0). 표본 2개뿐이라
+  단정할 순 없지만, Triage judge 프롬프트의 4개 항목이 실제로는 서로
+  독립적인 지표가 아닐 수 있다는 신호로 기록 — Phase 6에서 Triage
+  임계값을 정할 때 4개를 독립적으로 다룰지, 종합 점수 하나로 볼지
+  판단할 때 참고 필요(`triage_judge_adversarial.json`,
+  `PHASE3_CHECKLIST.md` 참고).
 - `case_eval.py`의 rule 체크 전체(2A~2D 등, 특히 2C 예약 겹침)에 대한
   체계적 단위 테스트가 아직 계획에 없음(Phase 2 진행 중 사용자가 확인,
   2026-08-14) — 이 체크들은 DB 조회 기반 결정론적 로직이라 골든 데이터셋
@@ -647,6 +660,14 @@ Dependabot으로 알려진 취약점을 CI에서 자동 스캔한다.
 | 9 | 데이터셋 100개로 확장 (+ 적대적 케이스 10~15개) | Phase 8 완료 | 3번 섹션 목표 수량 도달 |
 | 10 | CI 연동 (rule 체크 우선, LLM 체크 nightly) | Phase 9 완료 | CI에서 rule 체크 최소 3개 자동 실행 확인 |
 
+> **Phase 3/4 진행 상태 (2026-08-18)**: Phase 3 완료 조건("일치율
+> 수치 산출 + FAIL 케이스 recall 별도 산출")을 LLM Judge 타입 체크
+> 2개(Chart·Triage) 모두 충족 — Chart(1차 6/6 + 2차 조작 5/5), Triage(1차
+> 2/2 + 조작 2/2). **Phase 3 완료로 판단.** Phase 4("판정 프롬프트
+> 보정")는 현재 표본 기준으로는 일치율 100%(Chart 11/11, Triage 4/4)라
+> **보정 대상이 없음 — "보정 불필요"로 완료 처리하고, Phase 9(표본
+> 확대) 이후 재검토**. 자세한 근거는 `PHASE3_CHECKLIST.md` 참고.
+
 ---
 
 ## 14. 완료 정의 (Definition of Done)
@@ -654,12 +675,15 @@ Dependabot으로 알려진 취약점을 CI에서 자동 스캔한다.
 - [ ] 5개 에이전트 전부 공통 스키마(`CheckResult`) 반환
 - [ ] Hard gate 항목 recall 100% 확인됨 (측정 근거 기록 포함)
 - [ ] Judge 판정-사람 라벨 일치율 측정 완료 + 기록 남김 — **조건부 진행 중
-      (2026-08-16)**: Chart는 1차 검증 완료(1차 6개+2차 5개, 총 11개
-      표본 — PASS/WARN 양쪽 다 정확히 구분함, `PHASE3_CHECKLIST.md`
-      참고). 다만 표본이 작고 judge=생성 모델 동일이라 자기평가 편향
-      위험이 남아있음(Phase 7에서 모델 분리 예정). 나머지 5개
-      에이전트(Triage `_check_1e` 포함) 검증과 표본 확대는 Phase 9에서
-      진행 — 그 전까지 이 항목은 "Chart만 잠정 통과"로 취급하고 전체
+      (2026-08-18 갱신)**: LLM Judge 타입 체크 2개(Chart `_check_chart_quality`,
+      Triage `_check_1e`) 모두 1차 검증 완료. Chart는 1차 6개+2차(조작)
+      5개, 총 11개 표본 — PASS/WARN 양쪽 다 정확히 구분함. Triage는
+      1차 2개(judge=사람 100% 일치)+조작 2개(FAIL recall 2/2), 총 4개
+      표본 — 자세한 내용은 `PHASE3_CHECKLIST.md` 참고. 다만 두 체크 다
+      표본이 작고 judge=생성 모델 동일이라 자기평가 편향 위험이
+      남아있음(Phase 7에서 모델 분리 예정). 나머지 4개 에이전트(Rule/
+      Hybrid Gate 타입)와 두 judge의 표본 확대는 Phase 9에서 진행 —
+      그 전까지 이 항목은 "Chart+Triage 잠정 통과"로 취급하고 전체
       완료로 체크하지 않는다.
 - [ ] 임계값 전부 `eval_config.yaml`로 이동, 근거(측정치·신뢰구간·커밋) 기록
 - [ ] CI에 rule 체크 최소 3개 이상 자동 실행

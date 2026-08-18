@@ -304,3 +304,43 @@ RAG 적용 재생성 케이스 2개(`triage_judge_calibration_rag.json`)에
 Chart urgency 무검증 Known Issue에도 Triage 사례로 追記함 — LLM Judge
 타입 체크(Chart·Triage 공통)는 urgency 값 자체를 검증하지 않는다는
 설계 공백이 두 에이전트에서 동일하게 재확인된 것.
+
+### Triage 조작 케이스 시도 (2026-08-18)
+
+1차 시도(2케이스 다 judge=PASS/사람=PASS)로는 판별력이 검증되지
+않아, Chart 2차 시도와 같은 방식으로 특정 기준만 겨냥해 망가뜨린
+대화 2개로 재시도. 생성 LLM 호출 없이 대화 텍스트를 직접 작성해
+`_check_1e`에 바로 투입(judge 호출 2회만). 스크립트:
+`backend/scripts/phase3_triage_judge_adversarial.py`, 결과:
+`ai/agents/eval_cases/triage_judge_adversarial.json`.
+
+| 조작 | 조작 내용 | 겨냥 기준 | completeness | question_efficiency | response_consistency | structuring_quality | judge_status |
+|---|---|---|---|---|---|---|---|
+| A | 후속 질문 없이 1턴 만에 종료(부위·기간·심각도 전부 미확인) | completeness(명확한 실패, 하한선 테스트) | **3.0** | 8.0 | 7.0 | **2.0** | INFO |
+| B | 이미 답변받은 발병 시기를 다시 질문(구토·배변 등 새 정보 미확인) | question_efficiency(미묘한 비효율, 정밀 테스트) | **4.0** | **3.0** | **2.0** | **3.0** | INFO |
+
+**FAIL 케이스 recall: 2/2** — 두 조작 다 judge가 INFO(이 체크의
+"정상 아님" 신호)로 정확히 잡아냄.
+
+**예측했던 부수 효과 확인**:
+- A의 question_efficiency 하락 예측 → **빗나감**(8.0, 통과선 유지 —
+  질문을 안 한 것 자체를 "비효율"로 보진 않은 것으로 보임)
+- B의 completeness 하락 예측 → **적중**(4.0 — 새 정보를 못 모은 게
+  completeness에도 반영됨)
+
+**예측 못 한 관찰 — 교차 오염**: 두 조작 다 겨냥한 기준 하나만
+깨끗하게 떨어진 게 아니라 각각 3개 기준씩 낮게 나옴. A는
+completeness 외 structuring_quality도 크게 하락(정보 자체가 적어
+정리할 내용도 없어진 부수 효과로 추정), B는 question_efficiency 외
+response_consistency도 크게 하락(이미 답한 질문을 다시 묻는 것을
+judge가 "대화 흐름과 안 맞음"으로도 해석한 것으로 추정). Chart의
+조작 A/B/C는 겨냥한 기준만 정밀하게 떨어뜨릴 수 있었던 것과 대비되는
+지점 — `EVAL_AGENT_REDESIGN_PLAN.md` 9번 섹션에 추가 기록.
+
+### Triage Phase 3 완료 조건 충족 확인
+
+md 13번 섹션 Phase 3 완료 조건("일치율 수치 산출 + FAIL 케이스 recall
+별도 산출") 중 Triage에 비어 있던 FAIL recall이 이번 조작 케이스
+시도(2/2)로 채워짐. Chart(1차 6/6 + 2차 5/5)와 Triage(1차 2/2 + 조작
+2/2) 둘 다 일치율 산출 + FAIL recall 산출 조건을 충족 — **Triage
+`_check_1e`에 대해서도 Phase 3 완료 조건이 채워진 것으로 판단.**
