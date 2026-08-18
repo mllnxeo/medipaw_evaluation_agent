@@ -561,6 +561,31 @@ Dependabot으로 알려진 취약점을 CI에서 자동 스캔한다.
   아직 골든 데이터셋을 만들고 라벨링하는 단계라, 실제 채점 로직 수정은
   **Phase 5**(공통 `CheckResult` 스키마로 통일하면서 각 에이전트 체크
   항목을 재설계하는 단계)에서 진행하기로 한다.
+- `backend/tests/triage_regression/test_triage_live.py`가 이미 삭제된
+  모듈(`ai.triage.prompt`)을 참조하는 죽은 코드임을 확인(Phase 3,
+  2026-08-18) — `-m live`로만 실행되는 테스트라 평소 CI/일반 실행에서는
+  안 걸려서 아무도 몰랐던 것으로 보임. 확인만 해두고 조치(삭제 또는
+  현재 `TriageAgent` 구조에 맞게 재작성)는 별도 세션에서 진행.
+- `.gitignore`의 데이터 관련 제외 항목 중 5개가 코드에서 전혀 참조되지
+  않는 죽은 패턴으로 확인됨(Phase 3, 2026-08-18): `ai/agents/test_data/`
+  (디렉터리 자체가 존재하지 않고 어디서도 안 쓰임), `backend/data/validation/*_report.md`
+  (`.md` 리포트를 만드는 스크립트 없음), `backend/data/validation/followup_marathon.json`
+  (실제 기본 파일명은 `followup_marathon_report.json`이라 이미 `*_report.json`
+  패턴에 포함됨 — docstring 예시에만 등장), `backend/data/validation/kin_safety*.json`
+  (실제 파일명이 `kin_style_safety_eval_*.json`으로 바뀐 뒤 gitignore가
+  안 따라간 흔적), `backend/data/validation/peteval_pills.json`(코드
+  전체에서 0건 매칭). 지금 당장 안 고치고 "정리 필요" 상태로만 기록 —
+  실제 삭제/정리는 별도 세션에서.
+- **`backend/data/validation/` vs `ai/agents/eval_cases/` 관계 명확화**
+  (Phase 3, 2026-08-18): 같은 대상(triage/chart/followup 등)을 다루지만
+  대체 관계가 아니라 상호보완 관계다. `validation/`은 실제 dev DB/API에
+  붙여서 `run_*.py`를 한 번 돌리고 HTML/JSON으로 그 순간의 결과를
+  eyeball하는 **1회성 E2E 산출물**(git 미추적, 판정 로직도 스크립트마다
+  하드코딩, 정적 입력만으로는 재현 안 되는 실 DB 연동 시나리오 — 예약
+  slot, 아카이브 pet 차단 등 — 을 찌르는 용도)인 반면, `eval_cases/`는
+  이번 재작업(Phase 1~3)이 만들고 있는 **git 추적되는 상시 골든
+  데이터셋**(`human_label`/`human_note` 스키마 통일, lint+테스트로 검증,
+  회귀 비교 목적)이다. "이거 왜 둘 다 있지" 헷갈리지 않도록 기록.
 
 ---
 
