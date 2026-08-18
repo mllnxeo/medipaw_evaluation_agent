@@ -40,7 +40,9 @@
       "question_efficiency": 8.0,
       "response_consistency": 9.0,
       "structuring_quality": 7.0
-    }
+    },
+    "output_quality_label": "PASS",
+    "output_quality_note": "judge가 대화 자체(원인 감별을 위한 알레르겐 관련 질문 누락)만 보고 completeness 7.0을 준 것 — 실제로 그런 질문이 없었던 게 맞아서 대화 품질 평가로서 타당함(urgency 계산과는 무관한 별개 검증 범위)."
   },
   {
     "case_name": "다음다뇨 (고양이)",
@@ -86,6 +88,8 @@
       "question_efficiency": 8.0,
       "response_consistency": 9.0,
       "structuring_quality": 7.0
-    }
+    },
+    "output_quality_label": "PASS",
+    "output_quality_note": "judge가 대화 자체(심각도 확인 질문 부족)만 보고 completeness 7.0을 준 것 — 대화 내용만 놓고 보면 타당함(urgency 저하 문제와는 무관한 별개 평가)."
   }
 ]

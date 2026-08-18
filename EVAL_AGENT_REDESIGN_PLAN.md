@@ -475,6 +475,15 @@ Dependabot으로 알려진 취약점을 CI에서 자동 스캔한다.
   데이터셋 케이스 자체의 urgency_level이 틀려도 Chart 평가 통과에는 영향이
   없다는 뜻). 이번 재작업 범위(Chart 에이전트 로직 재설계는 범위 밖)라 코드는
   고치지 않고 사실만 기록해둠.
+  **[Phase 3 후속 관찰, 2026-08-18]** Triage `_check_1e`(대화 품질 judge)에서도
+  같은 패턴이 재확인됨 — `_check_1e`는 문진 대화 자체(질문의 완결성·효율성·
+  일관성·구조화)만 채점하고, urgency 값은 완전히 별개의 추출 콜(`engine.match`/
+  `top_urgency`)이 계산하는 것이라 judge 판정 범위 밖이다. 다음다뇨 케이스
+  재생성 시 urgency가 ORANGE→YELLOW로 바뀌었는데도 `_check_1e`는 이를
+  전혀 짚어내지 못했고(애초에 그럴 설계가 아님), completeness 낮은 점수는
+  순전히 대화 내 질문 누락에 대한 것이었음(`triage_judge_calibration_rag.json`
+  참고). Chart·Triage 둘 다 "LLM Judge 타입 체크는 urgency 값 자체를
+  검증하지 않는다"는 동일한 설계 공백을 공유한다는 것을 실측으로 확인.
 - `case_eval.py`의 rule 체크 전체(2A~2D 등, 특히 2C 예약 겹침)에 대한
   체계적 단위 테스트가 아직 계획에 없음(Phase 2 진행 중 사용자가 확인,
   2026-08-14) — 이 체크들은 DB 조회 기반 결정론적 로직이라 골든 데이터셋
